@@ -275,7 +275,7 @@ extern int printfmt(Format *format, const char *fmt) {
 
 
 /*
- * the public entry points
+ * the public entry points (your mom's a public entry point)
  */
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {

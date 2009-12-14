@@ -44,7 +44,7 @@ INSTALL	= /usr/bin/install -c
 
 CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) -g -O2
 LDFLAGS	= $(ADDLDFLAGS) 
-LIBS	= $(ADDLIBS) 
+LIBS	= $(ADDLIBS) -ledit -ltermcap 
 
 
 HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \
@@ -62,7 +62,7 @@ OFILES	= access.o closure.o conv.o dict.o eval.o except.o fd.o gc.o glob.o \
 OTHER	= Makefile parse.y mksignal
 GEN	= esdump y.tab.c y.tab.h y.output token.h sigmsgs.c initial.c
 
-SIGFILES = /usr/include/bits/predefs.h /usr/include/bits/pthreadtypes.h /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h /usr/include/bits/siginfo.h /usr/include/bits/signum.h /usr/include/bits/sigset.h /usr/include/bits/sigstack.h /usr/include/bits/sigthread.h /usr/include/bits/types.h /usr/include/bits/typesizes.h /usr/include/bits/wordsize.h /usr/include/features.h /usr/include/gnu/stubs-32.h /usr/include/gnu/stubs.h /usr/include/signal.h /usr/include/sys/cdefs.h /usr/include/time.h /usr/lib/gcc/i486-linux-gnu/4.4.1/include/stddef.h 
+SIGFILES = /usr/include/_types.h /usr/include/i386/_structs.h /usr/include/i386/_types.h /usr/include/i386/signal.h /usr/include/mach/i386/_structs.h /usr/include/machine/_structs.h /usr/include/machine/_types.h /usr/include/machine/signal.h /usr/include/signal.h /usr/include/sys/_structs.h /usr/include/sys/_types.h /usr/include/sys/appleapiopts.h /usr/include/sys/cdefs.h /usr/include/sys/signal.h 
 
 es	: ${OFILES} initial.o
 	${CC} -o es ${LDFLAGS} ${OFILES} initial.o ${LIBS}

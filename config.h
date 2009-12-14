@@ -100,7 +100,7 @@
 /* #undef HAVE_LIBSUN */
 
 /* Define if you have the termcap library (-ltermcap).  */
-/* #undef HAVE_LIBTERMCAP */
+#define HAVE_LIBTERMCAP 1
 
 /* Define if you have the terminfo library (-lterminfo).  */
 /* #undef HAVE_LIBTERMINFO */

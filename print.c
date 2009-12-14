@@ -1,5 +1,18 @@
 /* print.c -- formatted printing routines ($Revision: 1.1.1.1 $) */
 
+/*
+    ON OS X, compiling kes produces the following error:
+    
+    print.c: In function ‘intconv’:
+    print.c:93: warning: ‘short int’ is promoted to ‘int’ when passed through ‘...’
+    print.c:93: warning: (so you should pass ‘int’ not ‘short int’ to ‘va_arg’)
+    print.c:93: note: if this code is reached, the program will abort
+    print.c: In function ‘fmtprint’:
+    print.c:282: error: incompatible types in assignment
+    make: *** [print.o] Error 1
+    
+ */
+
 #include "es.h"
 #include "print.h"
 

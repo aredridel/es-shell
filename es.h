@@ -4,7 +4,7 @@
 #include "stdenv.h"
 
 // Is the garbage collector in debug mode?
-#define GCDEBUG 1 // yes
+#define GCDEBUG 0 // no
 
 /*
  * meta-information for exported environment strings

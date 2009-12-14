@@ -293,9 +293,11 @@ extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	VA_START(format->args, fmt);
 	n += printfmt(format, fmt);
 	va_end(format->args);
-    *saveargs = *format->args;
-	// format->args = saveargs; //FIXME: errors out here on OS X
-	
+#if NO_VA_LIST_ASSIGN    
+    *format->args = *saveargs; //FIXME: errors out here on OS X
+#else
+    format->args = saveargs;
+#endif
 	return n + format->flushed;
 }
 

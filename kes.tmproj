@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>currentDocument</key>
+	<string>configure.in</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -18,15 +20,15 @@
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>config.cache</string>
-		</dict>
-		<dict>
-			<key>filename</key>
 			<string>config.guess</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:10:09Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.h</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:51Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -35,14 +37,20 @@
 		<dict>
 			<key>filename</key>
 			<string>config.log</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:14:57Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.status</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:14:42Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.sub</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:14:40Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -50,19 +58,25 @@
 		</dict>
 		<dict>
 			<key>filename</key>
+			<string>config.cache</string>
+			<key>selected</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>README.markdown</string>
+			<key>selected</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>filename</key>
 			<string>configure.in</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:51Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conv.c</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>CVS</string>
-			<key>regexFolderFilter</key>
-			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>sourceDirectory</key>
-			<string>CVS</string>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -83,6 +97,8 @@
 		<dict>
 			<key>filename</key>
 			<string>ERRATA</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:15:57Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -119,6 +135,8 @@
 		<dict>
 			<key>filename</key>
 			<string>gc.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:11Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -135,6 +153,8 @@
 		<dict>
 			<key>filename</key>
 			<string>heredoc.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:15:54Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -147,6 +167,8 @@
 		<dict>
 			<key>filename</key>
 			<string>input.h</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:03Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -167,10 +189,14 @@
 		<dict>
 			<key>filename</key>
 			<string>Makefile</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:14Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Makefile.in</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:46Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -199,6 +225,8 @@
 		<dict>
 			<key>filename</key>
 			<string>prim-ctl.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:16:01Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -316,10 +344,74 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
-	<dict/>
+	<dict>
+		<key>Makefile</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>Makefile.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>4</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>config.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>configure.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>114</integer>
+		</dict>
+	</dict>
+	<key>openDocuments</key>
+	<array>
+		<string>Makefile</string>
+		<string>Makefile.in</string>
+		<string>config.h</string>
+		<string>configure.in</string>
+	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{167, 8}, {955, 870}}</string>
+	<string>{{20, 22}, {1060, 856}}</string>
 </dict>
 </plist>

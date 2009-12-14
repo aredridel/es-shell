@@ -7,10 +7,8 @@
  * type qualifiers
  */
 
-#if !USE_VOLATILE
-# ifndef volatile
-#  define volatile
-# endif
+#ifndef volatile
+#define volatile
 #endif
 
 
@@ -43,10 +41,7 @@
 #include <setjmp.h>
 #include <signal.h>
 #include <ctype.h>
-
-#if REQUIRE_STAT || REQUIRE_IOCTL
 #include <sys/types.h>
-#endif
 
 #if REQUIRE_IOCTL
 #include <sys/ioctl.h>

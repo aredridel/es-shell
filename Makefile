@@ -72,7 +72,7 @@ MANIFEST:
 
 install : es
 	$(INSTALL) $(srcdir)/es $(bindir)
-	$(INSTALL) $(srcdir)/es.1 $(mandir)/man1
+	$(INSTALL) $(srcdir)/doc/es.1 $(mandir)/man1
 
 test	: trip
 

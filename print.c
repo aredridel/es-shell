@@ -280,9 +280,9 @@ extern int printfmt(Format *format, const char *fmt) {
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	int n = -format->flushed;
-#if NO_VA_LIST_ASSIGN
+#if NO_VA_LIST_ASSIGN 
+    // somewhere in here is something that breaks on OS X.
 	va_list saveargs;
-
 	memcpy(saveargs, format->args, sizeof(va_list));
 #else
 	va_list saveargs = format->args;

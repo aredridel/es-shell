@@ -44,7 +44,7 @@ INSTALL	= /usr/bin/install -c
 
 CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) -g -O2
 LDFLAGS	= $(ADDLDFLAGS) 
-LIBS	= $(ADDLIBS) -ledit -ltermcap 
+LIBS	= $(ADDLIBS) 
 
 
 HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \

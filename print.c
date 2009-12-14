@@ -103,7 +103,7 @@ static void intconv(Format *format, unsigned int radix, int upper, char *altform
 	if (flags & FMT_long)
 		n = va_arg(format->args, long);
 	else if (flags & FMT_short)
-		n = va_arg(format->args, short);
+		n = va_arg(format->args, int); // used to be format->args, short but that got cast to an int anyway
 	else
 		n = va_arg(format->args, int);
 
@@ -292,7 +292,7 @@ extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	VA_START(format->args, fmt);
 	n += printfmt(format, fmt);
 	va_end(format->args);
-	format->args = saveargs;
+	format->args = saveargs; //FIXME: errors out here on OS X
 
 	return n + format->flushed;
 }

@@ -7,144 +7,46 @@ configure:680: checking whether the C compiler (gcc  ) works
 configure:694: gcc -o conftest    conftest.c  1>&5
 configure:714: checking whether the C compiler (gcc  ) is a cross-compiler
 configure:719: checking whether we are using GNU C
-configure:728: gcc -E conftest.c
 configure:743: checking whether gcc accepts -g
 configure:781: checking for a BSD compatible install
 configure:835: checking for bison
 configure:865: checking for /dev/fd filesystem
 configure:883: checking whether #! works in shell scripts
 configure:913: checking for getpwuid in -lsun
-configure:932: gcc -o conftest -g -O2   conftest.c -lsun   1>&5
-/usr/bin/ld: cannot find -lsun
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 921 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char getpwuid();
-
-int main() {
-getpwuid()
-; return 0; }
 configure:1156: checking for dirent.h that defines DIR
-configure:1169: gcc -c -g -O2  conftest.c 1>&5
 configure:1194: checking for opendir in -ldir
-configure:1213: gcc -o conftest -g -O2   conftest.c -ldir   1>&5
-/usr/bin/ld: cannot find -ldir
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 1202 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char opendir();
-
-int main() {
-opendir()
-; return 0; }
 configure:1277: checking how to run the C preprocessor
-configure:1298: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1338: checking for ANSI C header files
-configure:1351: gcc -E  conftest.c >/dev/null 2>conftest.out
-configure:1418: gcc -o conftest -g -O2   conftest.c  1>&5
-configure: In function 'main':
-configure:1413: warning: incompatible implicit declaration of built-in function 'exit'
 configure:1442: checking for sys/wait.h that is POSIX.1 compatible
-configure:1463: gcc -c -g -O2  conftest.c 1>&5
 configure:1487: checking for fcntl.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for limits.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for sys/ioctl.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for sys/time.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for unistd.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for memory.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for stdarg.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1487: checking for sys/cdefs.h
-configure:1497: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:1526: checking for working const
-configure:1580: gcc -c -g -O2  conftest.c 1>&5
 configure:1601: checking for uid_t in sys/types.h
 configure:1635: checking for size_t
 configure:1669: checking type of array argument to getgroups
-configure:1702: gcc -o conftest -g -O2   conftest.c  1>&5
-configure: In function 'main':
-configure:1697: warning: incompatible implicit declaration of built-in function 'exit'
 configure:1741: checking whether gcc needs -traditional
 configure:1790: checking for unistd.h
 configure:1829: checking for getpagesize
-configure:1857: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:1882: checking for working mmap
-configure:2030: gcc -o conftest -g -O2   conftest.c  1>&5
-configure:1961: warning: conflicting types for built-in function 'malloc'
-configure: In function 'main':
-configure:1978: warning: incompatible implicit declaration of built-in function 'exit'
 configure:2053: checking return type of signal handlers
-configure:2075: gcc -c -g -O2  conftest.c 1>&5
 configure:2103: checking for wait3 that fills in rusage
-configure:2142: gcc -o conftest -g -O2   conftest.c  1>&5
-configure: In function 'main':
-configure:2131: warning: incompatible implicit declaration of built-in function '_exit'
-configure:2136: warning: incompatible implicit declaration of built-in function 'exit'
 configure:2168: checking for strerror
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for strtol
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for lstat
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for setrlimit
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for sigrelse
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for sighold
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for sigaction
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for sysconf
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for setsid
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:2168: checking for sigsetjmp
-configure:2196: gcc -o conftest -g -O2   conftest.c  1>&5
-/tmp/ccS4B40r.o: In function `main':
-/home/kevin/src/kes/configure:2190: undefined reference to `sigsetjmp'
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 2173 "configure"
-#include "confdefs.h"
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char sigsetjmp(); below.  */
-#include <assert.h>
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char sigsetjmp();
-
-int main() {
-
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_sigsetjmp) || defined (__stub___sigsetjmp)
-choke me
-#else
-sigsetjmp();
-#endif
-
-; return 0; }
 configure:2222: checking for an abused getenv
-configure:2243: gcc -o conftest -g -O2   conftest.c  1>&5
-configure: In function 'main':
-configure:2238: warning: incompatible implicit declaration of built-in function 'exit'
 configure:2269: checking whether assignment to va_list ok?
-configure:2285: gcc -c -g -O2  conftest.c 1>&5
 configure:2307: checking for rlimit type ...
 configure:2326: checking for files to extract signal information from

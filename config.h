@@ -139,7 +139,7 @@
 #define HAVE_SYS_CDEFS_H 1
 
 /* Can I assign to va_lists's */
-/* #undef NO_VA_LIST_ASSIGN */
+#define NO_VA_LIST_ASSIGN 1
 
 /* does sigsetjmp exist? */
-/* #undef HAVE_SIGSETJMP */
+#define HAVE_SIGSETJMP 1

@@ -3,6 +3,8 @@
 #include "config.h"
 #include "stdenv.h"
 
+#define GCVERBOSE 0 
+
 /*
  * meta-information for exported environment strings
  */

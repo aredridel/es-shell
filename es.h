@@ -3,7 +3,8 @@
 #include "config.h"
 #include "stdenv.h"
 
-#define GCVERBOSE 0 
+// Is the garbage collector in debug mode?
+#define GCDEBUG 1 // yes
 
 /*
  * meta-information for exported environment strings

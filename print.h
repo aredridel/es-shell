@@ -40,7 +40,7 @@ extern int fprint(int fd, const char *fmt VARARGS);
 
 extern char *strv(const char *fmt, va_list args);	/* varargs interface to str() */
 
-#define	FPRINT_BUFSIZ	1024
+#define	FPRINT_BUFSIZ	2048
 
 /*
  * the following macro should by rights be coded as an expression, not

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>print.c</string>
+	<string>config.h</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -22,19 +22,21 @@
 			<key>filename</key>
 			<string>config.guess</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:10:09Z</date>
+			<date>2009-12-14T07:10:39Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.h</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T06:06:20Z</date>
+			<date>2009-12-14T07:19:14Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.h.in</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T06:06:10Z</date>
+			<date>2009-12-14T07:08:51Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -52,11 +54,13 @@
 			<key>filename</key>
 			<string>config.sub</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:14:40Z</date>
+			<date>2009-12-14T07:10:33Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>configure</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:16:03Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -66,25 +70,31 @@
 			<key>filename</key>
 			<string>README.markdown</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T06:06:07Z</date>
+			<date>2009-12-14T06:59:55Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>configure.in</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:34:18Z</date>
+			<date>2009-12-14T07:13:29Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conv.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:11:34Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>dict.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:11:35Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>dump.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:11:31Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -98,7 +108,7 @@
 			<key>filename</key>
 			<string>ERRATA</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:15:57Z</date>
+			<date>2009-12-14T07:11:28Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -107,6 +117,8 @@
 		<dict>
 			<key>filename</key>
 			<string>es.h</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:18:59Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -191,6 +203,8 @@
 		<dict>
 			<key>filename</key>
 			<string>main.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:19:14Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -260,25 +274,17 @@
 			<key>filename</key>
 			<string>print.c</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T06:58:38Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2009-12-14T07:18:56Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>print.h</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T06:58:38Z</date>
+			<date>2009-12-14T07:18:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>proc.c</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>README</string>
-			<key>lastUsed</key>
-			<date>2009-12-14T05:23:05Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -299,6 +305,8 @@
 		<dict>
 			<key>filename</key>
 			<string>stdenv.h</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T07:19:11Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -377,54 +385,208 @@
 			<key>firstVisibleLine</key>
 			<integer>40</integer>
 		</dict>
-		<key>gc.c</key>
+		<key>config.h</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>1</integer>
+				<integer>8</integer>
 				<key>line</key>
-				<integer>342</integer>
+				<integer>141</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>97</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>141</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>141</integer>
+			</dict>
+		</dict>
+		<key>config.h.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
+				<integer>140</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>95</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>7</integer>
+				<key>line</key>
+				<integer>140</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
+				<integer>140</integer>
+			</dict>
+		</dict>
+		<key>configure</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>30</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>2271</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>9</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>30</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+		</dict>
+		<key>configure.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>98</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>70</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+		</dict>
+		<key>es.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>295</integer>
+			<integer>0</integer>
+		</dict>
+		<key>main.c</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>print.c</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>101</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>105</integer>
+				<integer>17</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>278</integer>
+			<integer>0</integer>
 		</dict>
 		<key>print.h</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>42</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>stdenv.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>4</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>45</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>Makefile</string>
 		<string>print.c</string>
-		<string>gc.c</string>
+		<string>es.h</string>
+		<string>configure</string>
+		<string>config.h</string>
+		<string>stdenv.h</string>
+		<string>main.c</string>
+		<string>config.h.in</string>
+		<string>configure.in</string>
 		<string>print.h</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>

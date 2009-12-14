@@ -15,6 +15,7 @@
 
 #include "es.h"
 #include "print.h"
+#include <stdarg.h>
 
 #define	MAXCONV 256
 
@@ -275,12 +276,12 @@ extern int printfmt(Format *format, const char *fmt) {
 
 
 /*
- * the public entry points (your mom's a public entry point)
+ * the public entry points (your mom's a public entry point) 
  */
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	int n = -format->flushed;
-#if NO_VA_LIST_ASSIGN
+#if 0
 	va_list saveargs;
 
 	memcpy(saveargs, format->args, sizeof(va_list));

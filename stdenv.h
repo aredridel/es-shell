@@ -1,9 +1,7 @@
 /* stdenv.h -- set up an environment we can use ($Revision: 1.3 $) */
 
 #include "esconfig.h"
-#ifdef HAVE_SYS_CDEFS_H
-# include <sys/cdefs.h>
-#endif
+#include <sys/cdefs.h>
 
 /*
  * type qualifiers

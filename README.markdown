@@ -1,4 +1,4 @@
-kes v0.1µ1
+kes v0.1
 ---------
 
 **kes** is a fork of the **es** shell created by Paul Haahr and Byron Rakitzis. It is based on the [**rc** command interpreter](http://doc.cat-v.org/plan_9/4th_edition/papers/rc), part of the [**Plan 9**](http://plan9.bell-labs.com/plan9/) operating system. The purpose of **kes** is to improve on performance and implementation details of **es** and keep the project up to date (that is, avoiding code rot). It is based on the 0.9 beta 1 release of es, which can be found here.

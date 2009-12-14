@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>configure.in</string>
+	<string>print.c</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -28,11 +28,13 @@
 			<key>filename</key>
 			<string>config.h</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:16:51Z</date>
+			<date>2009-12-14T06:06:20Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.h.in</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:06:10Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -59,20 +61,18 @@
 		<dict>
 			<key>filename</key>
 			<string>config.cache</string>
-			<key>selected</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README.markdown</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:06:07Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>configure.in</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:16:51Z</date>
+			<date>2009-12-14T05:34:18Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -115,6 +115,8 @@
 		<dict>
 			<key>filename</key>
 			<string>esdebug</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:34:08Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -136,7 +138,7 @@
 			<key>filename</key>
 			<string>gc.c</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:16:11Z</date>
+			<date>2009-12-14T06:58:36Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -145,6 +147,8 @@
 		<dict>
 			<key>filename</key>
 			<string>glob.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:34:12Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -159,6 +163,8 @@
 		<dict>
 			<key>filename</key>
 			<string>initial.es</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:53:58Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -190,13 +196,13 @@
 			<key>filename</key>
 			<string>Makefile</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:16:14Z</date>
+			<date>2009-12-14T06:54:00Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Makefile.in</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T05:16:46Z</date>
+			<date>2009-12-14T06:11:29Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -217,6 +223,8 @@
 		<dict>
 			<key>filename</key>
 			<string>opt.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:34:11Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -251,10 +259,16 @@
 		<dict>
 			<key>filename</key>
 			<string>print.c</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:58:38Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>print.h</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:58:38Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -263,6 +277,8 @@
 		<dict>
 			<key>filename</key>
 			<string>README</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T05:23:05Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -307,6 +323,8 @@
 		<dict>
 			<key>filename</key>
 			<string>TODO</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T06:25:28Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -357,61 +375,61 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>40</integer>
 		</dict>
-		<key>Makefile.in</key>
+		<key>gc.c</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>50</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>4</integer>
+				<integer>342</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>295</integer>
+		</dict>
+		<key>print.c</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>101</integer>
+				<key>line</key>
+				<integer>105</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>278</integer>
+		</dict>
+		<key>print.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-		</dict>
-		<key>config.h</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>configure.in</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>114</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>Makefile</string>
-		<string>Makefile.in</string>
-		<string>config.h</string>
-		<string>configure.in</string>
+		<string>print.c</string>
+		<string>gc.c</string>
+		<string>print.h</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{20, 22}, {1060, 856}}</string>
+	<string>{{20, 0}, {1114, 878}}</string>
 </dict>
 </plist>

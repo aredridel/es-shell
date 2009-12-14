@@ -39,7 +39,7 @@ LIBS	= $(ADDLIBS)
 
 
 HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \
-	  stdenv.h syntax.h term.h var.h
+	  stdenv.h syntax.h var.h
 CFILES	= access.c closure.c conv.c dict.c eval.c except.c fd.c gc.c glob.c \
 	  glom.c input.c heredoc.c list.c main.c match.c open.c opt.c \
 	  prim-ctl.c prim-etc.c prim-io.c prim-sys.c prim.c print.c proc.c \
@@ -126,13 +126,13 @@ print.o : print.c es.h config.h stdenv.h print.h
 proc.o : proc.c es.h config.h stdenv.h prim.h 
 signal.o : signal.c es.h config.h stdenv.h sigmsgs.h 
 split.o : split.c es.h config.h stdenv.h gc.h 
-status.o : status.c es.h config.h stdenv.h term.h 
+status.o : status.c es.h config.h stdenv.h
 str.o : str.c es.h config.h stdenv.h gc.h print.h 
 syntax.o : syntax.c es.h config.h stdenv.h input.h syntax.h token.h 
-term.o : term.c es.h config.h stdenv.h gc.h term.h 
+term.o : term.c es.h config.h stdenv.h gc.h  
 token.o : token.c es.h config.h stdenv.h input.h syntax.h token.h 
 tree.o : tree.c es.h config.h stdenv.h gc.h 
 util.o : util.c es.h config.h stdenv.h 
-var.o : var.c es.h config.h stdenv.h gc.h var.h term.h 
+var.o : var.c es.h config.h stdenv.h gc.h var.h
 vec.o : vec.c es.h config.h stdenv.h gc.h 
 version.o : version.c es.h config.h stdenv.h 

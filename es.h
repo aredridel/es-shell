@@ -23,6 +23,11 @@ typedef struct List List;
 typedef struct Binding Binding;
 typedef struct Closure Closure;
 
+struct Term {
+	char *str;
+	Closure *closure;
+};
+
 struct List {
 	Term *term;
 	List *next;

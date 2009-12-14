@@ -651,7 +651,6 @@ static char *tree2name(NodeKind k) {
 	};
 
 #include "var.h"
-#include "term.h"
 
 
 static size_t dump(Tag *t, void *p) {

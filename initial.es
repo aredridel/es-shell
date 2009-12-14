@@ -1,5 +1,5 @@
 # initial.es -- set up initial interpreter state ($Revision: 1.1.1.1 $)
-
+# Revision 1, 13 Dec 09 /kl
 
 #
 # Introduction

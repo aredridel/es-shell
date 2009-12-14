@@ -3,7 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
+<<<<<<< HEAD:kes.tmproj
 	<string>Makefile</string>
+=======
+	<string>config.h</string>
+>>>>>>> printfix:kes.tmproj
 	<key>documents</key>
 	<array>
 		<dict>
@@ -28,13 +32,23 @@
 			<key>filename</key>
 			<string>config.h</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:33:28Z</date>
+=======
+			<date>2009-12-14T07:19:14Z</date>
+			<key>selected</key>
+			<true/>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>config.h.in</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:29:59Z</date>
+=======
+			<date>2009-12-14T07:08:51Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -58,7 +72,11 @@
 			<key>filename</key>
 			<string>configure</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:31:44Z</date>
+=======
+			<date>2009-12-14T07:16:03Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -74,7 +92,11 @@
 			<key>filename</key>
 			<string>configure.in</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:30:22Z</date>
+=======
+			<date>2009-12-14T07:13:29Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -272,13 +294,21 @@
 			<key>filename</key>
 			<string>print.c</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:35:13Z</date>
+=======
+			<date>2009-12-14T07:18:56Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>print.h</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:26:25Z</date>
+=======
+			<date>2009-12-14T07:18:53Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -304,7 +334,11 @@
 			<key>filename</key>
 			<string>stdenv.h</string>
 			<key>lastUsed</key>
+<<<<<<< HEAD:kes.tmproj
 			<date>2009-12-14T07:20:07Z</date>
+=======
+			<date>2009-12-14T07:19:11Z</date>
+>>>>>>> printfix:kes.tmproj
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -403,6 +437,7 @@
 			<dict>
 				<key>column</key>
 				<integer>8</integer>
+<<<<<<< HEAD:kes.tmproj
 				<key>line</key>
 				<integer>141</integer>
 			</dict>
@@ -597,6 +632,172 @@
 				<integer>0</integer>
 				<key>line</key>
 				<integer>0</integer>
+=======
+				<key>line</key>
+				<integer>141</integer>
+>>>>>>> printfix:kes.tmproj
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+<<<<<<< HEAD:kes.tmproj
+			<integer>0</integer>
+=======
+			<integer>97</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>141</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>141</integer>
+			</dict>
+>>>>>>> printfix:kes.tmproj
+		</dict>
+		<key>config.h.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+<<<<<<< HEAD:kes.tmproj
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+=======
+				<integer>24</integer>
+				<key>line</key>
+				<integer>140</integer>
+>>>>>>> printfix:kes.tmproj
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+<<<<<<< HEAD:kes.tmproj
+			<integer>0</integer>
+=======
+			<integer>95</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>7</integer>
+				<key>line</key>
+				<integer>140</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
+				<integer>140</integer>
+			</dict>
+>>>>>>> printfix:kes.tmproj
+		</dict>
+		<key>configure</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>30</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>2271</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>9</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>30</integer>
+				<key>line</key>
+				<integer>2296</integer>
+			</dict>
+		</dict>
+		<key>configure.in</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>98</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>70</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>125</integer>
+			</dict>
+		</dict>
+		<key>es.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>26</integer>
+				<key>line</key>
+				<integer>42</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>stdenv.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>4</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>main.c</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -608,9 +809,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>17</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -643,21 +844,27 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>45</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>Makefile</string>
 		<string>print.c</string>
+<<<<<<< HEAD:kes.tmproj
 		<string>Makefile.in</string>
 		<string>config.status</string>
 		<string>config.log</string>
+=======
+>>>>>>> printfix:kes.tmproj
 		<string>es.h</string>
 		<string>configure</string>
 		<string>config.h</string>
 		<string>stdenv.h</string>
+<<<<<<< HEAD:kes.tmproj
 		<string>esconfig.h</string>
+=======
+>>>>>>> printfix:kes.tmproj
 		<string>main.c</string>
 		<string>config.h.in</string>
 		<string>configure.in</string>

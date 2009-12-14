@@ -15,6 +15,7 @@
 
 #include "es.h"
 #include "print.h"
+#include <stdarg.h>
 
 #define	MAXCONV 256
 
@@ -275,7 +276,7 @@ extern int printfmt(Format *format, const char *fmt) {
 
 
 /*
- * the public entry points (your mom's a public entry point)
+ * the public entry points (your mom's a public entry point) 
  */
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {

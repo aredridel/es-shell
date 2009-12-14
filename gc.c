@@ -320,7 +320,7 @@ extern void *forward(void *p) {
 
 	tag = TAG(p);
 	assert(tag != NULL);
-	if (FORWARDED(tag)) {
+	if (FORWARDED(tag)) { //FIXME: there's a warning here.
 		np = FOLLOW(tag);
 		assert(TAG(np)->magic == TAGMAGIC);
 		VERBOSE(("%s	-> %8ux (followed)\n", TAG(np)->typename, np));

@@ -281,7 +281,7 @@ extern int printfmt(Format *format, const char *fmt) {
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	int n = -format->flushed;
-#if 0
+#if NO_VA_LIST_ASSIGN 
 	va_list saveargs;
 
 	memcpy(saveargs, format->args, sizeof(va_list));

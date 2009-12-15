@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>README.markdown</string>
+	<string>Makefile.in</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -48,15 +48,13 @@
 			<key>filename</key>
 			<string>configure</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T08:37:58Z</date>
+			<date>2009-12-14T09:49:25Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README.markdown</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T09:23:41Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2009-12-14T09:42:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -189,6 +187,8 @@
 		<dict>
 			<key>filename</key>
 			<string>install-sh</string>
+			<key>lastUsed</key>
+			<date>2009-12-14T09:43:16Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -204,13 +204,15 @@
 			<key>filename</key>
 			<string>Makefile</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T08:52:02Z</date>
+			<date>2009-12-14T09:49:25Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Makefile.in</string>
 			<key>lastUsed</key>
-			<date>2009-12-14T09:00:06Z</date>
+			<date>2009-12-15T08:17:58Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -376,28 +378,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>25</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>74</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>38</integer>
 		</dict>
 		<key>Makefile.in</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>74</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>51</integer>
 		</dict>
 		<key>README.markdown</key>
 		<dict>
@@ -443,6 +445,20 @@
 				<integer>95</integer>
 			</dict>
 		</dict>
+		<key>configure</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>42</integer>
+				<key>line</key>
+				<integer>539</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>525</integer>
+		</dict>
 		<key>es.h</key>
 		<dict>
 			<key>caret</key>
@@ -485,6 +501,20 @@
 			<key>firstVisibleLine</key>
 			<integer>58</integer>
 		</dict>
+		<key>install-sh</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>79</integer>
+		</dict>
 		<key>status.c</key>
 		<dict>
 			<key>caret</key>
@@ -520,9 +550,11 @@
 		<string>config.h</string>
 		<string>status.c</string>
 		<string>Makefile</string>
+		<string>configure</string>
 		<string>es.h</string>
 		<string>stdenv.h</string>
 		<string>README.markdown</string>
+		<string>install-sh</string>
 		<string>initial.es</string>
 		<string>esconfig.h</string>
 	</array>

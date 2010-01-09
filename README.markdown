@@ -1,9 +1,17 @@
 kes v0.1
 ---------
 
-**kes** is a fork of the **es** shell created by Paul Haahr and Byron Rakitzis. It is based on the [**rc** command interpreter](http://doc.cat-v.org/plan_9/4th_edition/papers/rc), part of the [**Plan 9**](http://plan9.bell-labs.com/plan9/) operating system. The purpose of **kes** is to improve on performance and implementation details of **es** and keep the project up to date (that is, avoiding code rot). It is based on the 0.9 beta 1 release of es, which can be found here.
+**kes** is a fork of the **es** shell created by Paul Haahr and Byron Rakitzis. It is based on the [**rc** command interpreter](http://doc.cat-v.org/plan_9/4th_edition/papers/rc), part of the [**Plan 9**](http://plan9.bell-labs.com/plan9/) operating system.
 
 See the **CHANGES** file for a list of changes to the shell. See the **INSTALL** file for instructions for installing `es`. In all other ways, I believe that this file is up to date.
+
+Why a fork?
+-----------
+The purpose of **kes** is to improve on performance and implementation details of **es** and keep the project up to date (that is, avoiding code rot). It is based on the 0.9 beta 1 release of es, which can be found here.
+
+The obvious question here is: "What's the purpose of this fork?" and the honest answer is this: I wanted to experiment with the **es** shell, and it wouldn't compile on OS X, and the code was in the public domain. It's really as simple as that. The purpose of this fork isn't so much to *improve* the shell, but to *maintain the codebase.* That said, there are a few things on the "to do" list that I'd like to work on at some point--but that'll be a while, if only because I'm (at best) a mediocre C programmer. Anyway, enjoy! 
+
+Now for the original **es** readme, which is far more informative than the 
 
 About es
 --------

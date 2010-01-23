@@ -9,9 +9,11 @@ Why a fork?
 -----------
 The purpose of **kes** is to improve on performance and implementation details of **es** and keep the project up to date (that is, avoiding code rot). It is based on the 0.9 beta 1 release of es, which can be found here.
 
-The obvious question here is: "What's the purpose of this fork?" and the honest answer is this: I wanted to experiment with the **es** shell, and it wouldn't compile on OS X, and the code was in the public domain. It's really as simple as that. The purpose of this fork isn't so much to *improve* the shell, but to *maintain the codebase.* That said, there are a few things on the "to do" list that I'd like to work on at some point--but that'll be a while, if only because I'm (at best) a mediocre C programmer. Anyway, enjoy! 
+The obvious question here is: "What's the purpose of this fork?" and the honest answer is this: I wanted to experiment with the **es** shell, and it wouldn't compile on OS X, and the code was in the public domain. It's really as simple as that. The purpose of this fork isn't so much to *improve* the shell, but to *maintain the codebase.* 
 
-Now for the original **es** readme, which is far more informative than the 
+That said, there are a few things on the "to do" list that I'd like to work on at some point--but that'll be a while, if only because I'm (at best) a mediocre C programmer. Anyway, enjoy! 
+
+Now for the original **es** readme, which is far more informative than the crap I've added here. 
 
 About es
 --------

@@ -1,6 +1,15 @@
 CHANGES		-*- mode: indented-text -*- ($Revision: 1.4 $)
 =======
 
+0.9-beta to 0.9-beta2
+---------------------
+
+Changed configuration code so that Es compiles on Mac OS X Snow Leopard.
+
+Removed several includes, including removal of the whole term.h file.
+Work on further simplification of the codebase is ongoing, although the
+whole thing was pretty simple (in the Plan 9 tradition) when I got here.
+
 0.9-alpha2 to 0.9beta
 ---------------------
 

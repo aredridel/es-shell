@@ -292,10 +292,10 @@ extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	VA_START(format->args, fmt);
 	n += printfmt(format, fmt);
 	va_end(format->args);
-#if NO_VA_LIST_ASSIGN    //TODO: this may not compile on Linux.
-    *format->args = *saveargs; 
+#if NO_VA_LIST_ASSIGN    
+        *format->args = *saveargs; 
 #else
-    format->args = saveargs;
+        format->args = saveargs;
 #endif
 	return n + format->flushed;
 }

@@ -276,27 +276,25 @@ extern int printfmt(Format *format, const char *fmt) {
 
 
 /*
- * the public entry points (your mom's a public entry point) 
+ * the public entry points 
  */
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	int n = -format->flushed;
-#if NO_VA_LIST_ASSIGN 
+
 	va_list saveargs;
+
 	memcpy(saveargs, format->args, sizeof(va_list));
-#else
-	va_list saveargs = format->args;
-#endif
+
 
 
 	VA_START(format->args, fmt);
 	n += printfmt(format, fmt);
+
 	va_end(format->args);
-#if NO_VA_LIST_ASSIGN    
+   
         *format->args = *saveargs; 
-#else
-        format->args = saveargs;
-#endif
+
 	return n + format->flushed;
 }
 

@@ -1,4 +1,3 @@
-# Generated automatically from Makefile.in by configure.
 # Makefile for es ($Revision: 1.5 $)
 
 # Some of the advice here is rather old and out of date.  The
@@ -20,7 +19,7 @@
 
 prefix  = /usr/local
 exec_prefix	= ${prefix}
-mandir	= ${prefix}/man
+mandir	= ${prefix}/share/man
 bindir	= ${exec_prefix}/bin
 srcdir  = .
 
@@ -36,6 +35,7 @@ INSTALL	= /usr/bin/install -c
 CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) -g -O2
 LDFLAGS	= $(ADDLDFLAGS) 
 LIBS	= $(ADDLIBS) 
+
 
 
 HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \

@@ -134,10 +134,5 @@
 /* Do you have setsid? */
 #undef HAVE_SETSID
 
-/* Do you have a new fnagled sys/cdefs.h? */
-#undef HAVE_SYS_CDEFS_H
-
-
-
 /* does sigsetjmp exist? */
 #undef HAVE_SIGSETJMP

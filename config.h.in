@@ -137,8 +137,7 @@
 /* Do you have a new fnagled sys/cdefs.h? */
 #undef HAVE_SYS_CDEFS_H
 
-/* Can I assign to va_lists's */
-#undef NO_VA_LIST_ASSIGN
+
 
 /* does sigsetjmp exist? */
 #undef HAVE_SIGSETJMP

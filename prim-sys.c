@@ -374,7 +374,7 @@ PRIM(time) {
 }
 #endif	/* BUILTIN_TIME */
 
-#if !KERNEL_POUNDBANG
+#if 0 // !KERNEL_POUNDBANG /* are there systems that don't support this anymore? */
 PRIM(execfailure) {
 	int fd, len, argc;
 	char header[1024], *args[10], *s, *end, *file;

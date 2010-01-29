@@ -135,10 +135,5 @@
 /* Do you have setsid? */
 #define HAVE_SETSID 1
 
-/* Do you have a new fnagled sys/cdefs.h? */
-#define HAVE_SYS_CDEFS_H 1
-
-
-
 /* does sigsetjmp exist? */
 #define HAVE_SIGSETJMP 1

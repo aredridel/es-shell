@@ -321,6 +321,9 @@ extern void *forward(void *p) {
 	tag = TAG(p);
 	assert(tag != NULL);
 	if (FORWARDED(tag)) { //FIXME: there's a warning here.
+	                        /* gc.c: In function ‘forward’:
+                            gc.c:323: warning: cast from pointer to integer of different size
+                            */
 		np = FOLLOW(tag);
 		assert(TAG(np)->magic == TAGMAGIC);
 		VERBOSE(("%s	-> %8ux (followed)\n", TAG(np)->typename, np));

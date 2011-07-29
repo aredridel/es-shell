@@ -53,7 +53,7 @@ OFILES	= access.o closure.o conv.o dict.o eval.o except.o fd.o gc.o glob.o \
 OTHER	= Makefile parse.y mksignal
 GEN	= esdump y.tab.c y.tab.h y.output token.h sigmsgs.c initial.c
 
-SIGFILES = /usr/include/_types.h /usr/include/i386/_structs.h /usr/include/i386/_types.h /usr/include/i386/signal.h /usr/include/mach/i386/_structs.h /usr/include/machine/_structs.h /usr/include/machine/_types.h /usr/include/machine/signal.h /usr/include/signal.h /usr/include/sys/_structs.h /usr/include/sys/_types.h /usr/include/sys/appleapiopts.h /usr/include/sys/cdefs.h /usr/include/sys/signal.h 
+SIGFILES = /usr/include/_types.h /usr/include/i386/_structs.h /usr/include/i386/_types.h /usr/include/i386/signal.h /usr/include/mach/i386/_structs.h /usr/include/machine/_structs.h /usr/include/machine/_types.h /usr/include/machine/signal.h /usr/include/signal.h /usr/include/sys/_posix_availability.h /usr/include/sys/_structs.h /usr/include/sys/_symbol_aliasing.h /usr/include/sys/_types.h /usr/include/sys/appleapiopts.h /usr/include/sys/cdefs.h /usr/include/sys/signal.h 
 
 es	: ${OFILES} initial.o
 	${CC} -o es ${LDFLAGS} ${OFILES} initial.o ${LIBS}

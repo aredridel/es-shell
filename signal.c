@@ -1,4 +1,4 @@
-/* signal.c -- signal handling ($Revision: 1.17 $) */
+/* signal.c -- signal handling ($Revision: 1.23 $) */
 
 #include "es.h"
 #include "sigmsgs.h"
@@ -58,7 +58,7 @@ extern char *sigmessage(int sig) {
 	for (i = 0; i < nsignals; i++)
 		if (signals[i].sig == sig)
 			return (char *) signals[i].msg;
-	return str("unkown signal %d", sig);
+	return str("unknown signal %d", sig);
 }
 
 
@@ -72,16 +72,15 @@ static void catcher(int sig) {
 	signal(sig, catcher);
 #endif
 	if (hasforked)
-		exit(1); /* exit unconditionally on a signal in a child process */
+		/* exit unconditionally on a signal in a child process */
+		exit(1);
 	if (caught[sig] == 0) {
 		caught[sig] = TRUE;
 		++sigcount;
 	}
 	interrupted = TRUE;
-#if !SYSV_SIGNALS
 	if (slow)
 		longjmp(slowlabel, 1);
-#endif
 }
 
 
@@ -222,9 +221,9 @@ extern void setsigdefaults(void) {
  */
 
 extern Boolean issilentsignal(List *e) {
-	return streq(getstr(e->term), "signal")
+	return (termeq(e->term, "signal"))
 		&& e->next != NULL
-		&& streq(getstr(e->next->term), "sigint");
+		&& termeq(e->next->term, "sigint");
 }
 
 extern List *mksiglist(void) {
@@ -245,7 +244,7 @@ extern List *mksiglist(void) {
 		Ref(char *, name, signame(sig));
 		if (prefix != '\0')
 			name = str("%c%s", prefix, name);
-		Ref(Term *, term, mkterm(name, NULL));
+		Ref(Term *, term, mkstr(name));
 		lp = mklist(term, lp);
 		RefEnd2(term, name);
 	}
@@ -278,7 +277,8 @@ extern void sigchk(void) {
 	if (sigcount == 0 || blocked)
 		return;
 	if (hasforked)
-		exit(1);	/* exit unconditionally on a signal in a child process */
+		/* exit unconditionally on a signal in a child process */
+		exit(1);
 
 	for (sig = 0;; sig++) {
 		if (caught[sig] != 0) {
@@ -287,12 +287,13 @@ extern void sigchk(void) {
 			break;
 		}
 		if (sig >= NSIG) {
-			/* panic("all-zero sig vector with nonzero sigcount"); */
 			sigcount = 0;
 			return;
 		}
 	}
-	Ref(List *, e, mklist(mkterm("signal", NULL), mklist(mkterm(signame(sig), NULL), NULL)));
+	resetparser();
+	Ref(List *, e,
+	    mklist(mkstr("signal"), mklist(mkstr(signame(sig)), NULL)));
 
 	switch (sigeffect[sig]) {
 	case sig_catch:

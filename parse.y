@@ -1,4 +1,4 @@
-/* parse.y -- grammar for es ($Revision: 1.7 $) */
+/* parse.y -- grammar for es ($Revision: 1.8 $) */
 
 %{
 #include "es.h"
@@ -8,7 +8,7 @@
 
 %token	WORD QWORD
 %token	LOCAL LET FOR CLOSURE FN
-%token	ANDAND BACKBACK CALL COUNT DUP FLAT OROR PRIM REDIR SUB
+%token	ANDAND BACKBACK EXTRACT CALL COUNT DUP FLAT OROR PRIM REDIR SUB
 %token	NL ENDFILE ERROR
 
 %left	LOCAL LET FOR CLOSURE ')'
@@ -61,8 +61,9 @@ cmd	:		%prec LET		{ $$ = NULL; }
 	| cmd ANDAND nl cmd			{ $$ = mkseq("%and", $1, $4); }
 	| cmd OROR nl cmd			{ $$ = mkseq("%or", $1, $4); }
  	| cmd PIPE nl cmd			{ $$ = mkpipe($1, $2->u[0].i, $2->u[1].i, $4); }
-	| '~' word words			{ $$ = mk(nMatch, $2, $3); }
 	| '!' caret cmd				{ $$ = prefix("%not", mk(nList, thunkify($3), NULL)); }
+	| '~' word words			{ $$ = mk(nMatch, $2, $3); }
+	| EXTRACT word words			{ $$ = mk(nExtract, $2, $3); }
 
 simple	: first				{ $$ = treecons2($1, NULL); }
 	| simple word			{ $$ = treeconsend2($1, $2); }
@@ -130,8 +131,9 @@ binder	: LOCAL		{ $$ = nLocal; }
 	| FOR		{ $$ = nFor; }
 	| CLOSURE	{ $$ = nClosure; }
 
-keyword	: '~'		{ $$ = "~"; }
-	| '!'		{ $$ = "!"; }
+keyword	: '!'		{ $$ = "!"; }
+	| '~'		{ $$ = "~"; }
+	| EXTRACT	{ $$ = "~~"; }
 	| LOCAL		{ $$ = "local"; }
 	| LET		{ $$ = "let"; }
 	| FOR		{ $$ = "for"; }

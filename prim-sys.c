@@ -1,4 +1,4 @@
-/* prim-sys.c -- system call primitives ($Revision: 1.32 $) */
+/* prim-sys.c -- system call primitives ($Revision: 1.38 $) */
 
 #define	REQUIRE_IOCTL	1
 
@@ -31,7 +31,7 @@ PRIM(newpgrp) {
 		esignal(SIGTTOU, sigttou);
 	}
 #endif
-	return listcopy(true);
+	return true;
 }
 
 PRIM(background) {
@@ -44,12 +44,7 @@ PRIM(background) {
 		mvfd(eopen("/dev/null", oOpen), 0);
 		exit(exitstatus(eval(list, NULL, evalflags | eval_inchild)));
 	}
-	return mklist(mkterm(str("%d", pid), NULL), NULL);
-}
-
-PRIM(exit) {
-	exit(exitstatus(list));
-	NOTREACHED;
+	return mklist(mkstr(str("%d", pid)), NULL);
 }
 
 PRIM(fork) {
@@ -60,7 +55,7 @@ PRIM(fork) {
 	status = ewaitfor(pid);
 	SIGCHK();
 	printstatus(0, status);
-	return mklist(mkterm(mkstatus(status), NULL), NULL);
+	return mklist(mkstr(mkstatus(status)), NULL);
 }
 
 PRIM(run) {
@@ -78,18 +73,18 @@ PRIM(umask) {
 		int mask = umask(0);
 		umask(mask);
 		print("%04o\n", mask);
-		return listcopy(true);
+		return true;
 	}
 	if (list->next == NULL) {
 		int mask;
 		char *s, *t;
 		s = getstr(list->term);
 		mask = strtol(s, &t, 8);
-		if (*t != '\0' || ((unsigned) mask) > 0777)
+		if ((t != NULL && *t != '\0') || ((unsigned) mask) > 07777)
 			fail("$&umask", "bad umask: %s", s);
 		if (umask(mask) == -1)
-			fail("$&umask", "umask %04d: %s", mask, strerror(errno));
-		return listcopy(true);
+			fail("$&umask", "umask %04o: %s", mask, strerror(errno));
+		return true;
 	}
 	fail("$&umask", "usage: umask [mask]");
 	NOTREACHED;
@@ -102,7 +97,7 @@ PRIM(cd) {
 	dir = getstr(list->term);
 	if (chdir(dir) == -1)
 		fail("$&cd", "chdir %s: %s", dir, strerror(errno));
-	return listcopy(true);
+	return true;
 }
 
 PRIM(setsignals) {
@@ -206,7 +201,7 @@ static void printlimit(const Limit *limit, Boolean hard) {
 	else
 		lim = rlim.rlim_cur;
 	if (lim == RLIM_INFINITY)
-		fprint(1, "%s \tunlimited\n", limit->name);
+		print("%-8s\tunlimited\n", limit->name);
 	else {
 		const Suffix *suf;
 		for (suf = limit->suffix; suf != NULL; suf = suf->next)
@@ -214,7 +209,7 @@ static void printlimit(const Limit *limit, Boolean hard) {
 				lim /= suf->amount;
 				break;
 			}
-		eprint("%-8s\t%d%s\n", limit->name, lim, (suf == NULL || lim == 0) ? "" : suf->name);
+		print("%-8s\t%d%s\n", limit->name, lim, (suf == NULL || lim == 0) ? "" : suf->name);
 	}
 }
 
@@ -290,7 +285,7 @@ PRIM(limit) {
 		}
 	}
 	RefEnd(lp);
-	return listcopy(true);
+	return true;
 }
 #endif	/* BSD_LIMITS */
 
@@ -324,7 +319,7 @@ PRIM(time) {
 	);
 
 	RefEnd(lp);
-	return mklist(mkterm(mkstatus(status), NULL), NULL);
+	return mklist(mkstr(mkstatus(status)), NULL);
 
 #else	/* !USE_WAIT3 */
 
@@ -368,7 +363,7 @@ PRIM(time) {
 	printstatus(0, status);
 
 	RefEnd(lp);
-	return mklist(mkterm(mkstatus(status), NULL), NULL);
+	return mklist(mkstr(mkstatus(status)), NULL);
 
 #endif	/* !USE_WAIT3 */
 
@@ -380,7 +375,7 @@ PRIM(execfailure) {
 	int fd, len, argc;
 	char header[1024], *args[10], *s, *end, *file;
 
-	gcdisable(0);
+	gcdisable();
 	if (list == NULL)
 		fail("$&execfailure", "usage: %%exec-failure name argv");
 
@@ -428,9 +423,9 @@ PRIM(execfailure) {
 	list = list->next;
 	if (list != NULL)
 		list = list->next;
-	list = mklist(mkterm(file, NULL), list);
+	list = mklist(mkstr(file), list);
 	while (argc != 0)
-		list = mklist(mkterm(args[--argc], NULL), list);
+		list = mklist(mkstr(args[--argc]), list);
 
 	Ref(List *, lp, list);
 	gcenable();
@@ -442,7 +437,6 @@ PRIM(execfailure) {
 extern Dict *initprims_sys(Dict *primdict) {
 	X(newpgrp);
 	X(background);
-	X(exit);
 	X(umask);
 	X(cd);
 	X(fork);

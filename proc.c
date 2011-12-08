@@ -1,4 +1,4 @@
-/* proc.c -- process control system calls ($Revision: 1.11 $) */
+/* proc.c -- process control system calls ($Revision: 1.12 $) */
 
 #include "es.h"
 
@@ -171,7 +171,7 @@ PRIM(apids) {
 	Ref(List *, lp, NULL);
 	for (p = proclist; p != NULL; p = p->next)
 		if (p->background && p->alive) {
-			Term *t = mkterm(str("%d", p->pid), NULL);
+			Term *t = mkstr(str("%d", p->pid));
 			lp = mklist(t, lp);
 		}
 	/* TODO: sort the return value, but by number? */
@@ -192,7 +192,7 @@ PRIM(wait) {
 		fail("$&wait", "usage: wait [pid]");
 		NOTREACHED;
 	}
-	return mklist(mkterm(mkstatus(ewait(pid, TRUE, NULL)), NULL), NULL);
+	return mklist(mkstr(mkstatus(ewait(pid, TRUE, NULL))), NULL);
 }
 
 extern Dict *initprims_proc(Dict *primdict) {

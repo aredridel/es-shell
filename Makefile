@@ -1,4 +1,8 @@
-# Makefile for es ($Revision: 1.16 $)
+# Makefile for es ($Revision: 1.18 $)
+
+# Some of the advice here is rather old and out of date.  The
+# configuration of es will be improved by 0.9beta, but I didn't
+# want to hunt out machines from now til eternity.
 
 # comment out the CFLAGS -Wall if you're not using gcc,
 # but i'd encourage you to compile with full warnings on.
@@ -22,14 +26,20 @@
 # to get definitions of all signals from <sys/signal.h>.
 # _POSIX_SOURCE, _XOPEN_SOURCE are the obvious ones.
 
+# To build es on an SGI running Yellow pages, set LIBS = -lsun
+
+# I've been told a good set of CFLAGS for linux is -g -O2 -m486 -Wall -Dlinux.
+
 SHELL	= /bin/sh
 CC	= cc
 #CC	= gcc
-CFLAGS	= -g -O -Wall
+CFLAGS	= -g
+#CFLAGS	= -g -O -Wall
 LDFLAGS	=
 LIBS	=
 
-HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h stdenv.h syntax.h var.h
+HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \
+	  stdenv.h syntax.h term.h var.h
 CFILES	= access.c closure.c conv.c dict.c eval.c except.c fd.c gc.c glob.c \
 	  glom.c input.c heredoc.c list.c main.c match.c open.c opt.c \
 	  prim-ctl.c prim-etc.c prim-io.c prim-sys.c prim.c print.c proc.c \
@@ -94,19 +104,19 @@ opt.o : opt.c es.h config.h stdenv.h
 prim.o : prim.c es.h config.h stdenv.h prim.h 
 prim-ctl.o : prim-ctl.c es.h config.h stdenv.h prim.h 
 prim-etc.o : prim-etc.c es.h config.h stdenv.h prim.h 
-prim-io.o : prim-io.c es.h config.h stdenv.h prim.h 
+prim-io.o : prim-io.c es.h config.h stdenv.h gc.h prim.h 
 prim-sys.o : prim-sys.c es.h config.h stdenv.h prim.h 
 print.o : print.c es.h config.h stdenv.h print.h 
 proc.o : proc.c es.h config.h stdenv.h prim.h 
 signal.o : signal.c es.h config.h stdenv.h sigmsgs.h 
 split.o : split.c es.h config.h stdenv.h gc.h 
-status.o : status.c es.h config.h stdenv.h 
+status.o : status.c es.h config.h stdenv.h term.h 
 str.o : str.c es.h config.h stdenv.h gc.h print.h 
 syntax.o : syntax.c es.h config.h stdenv.h input.h syntax.h token.h 
-term.o : term.c es.h config.h stdenv.h gc.h 
+term.o : term.c es.h config.h stdenv.h gc.h term.h 
 token.o : token.c es.h config.h stdenv.h input.h syntax.h token.h 
 tree.o : tree.c es.h config.h stdenv.h gc.h 
 util.o : util.c es.h config.h stdenv.h 
-var.o : var.c es.h config.h stdenv.h gc.h var.h 
+var.o : var.c es.h config.h stdenv.h gc.h var.h term.h 
 vec.o : vec.c es.h config.h stdenv.h gc.h 
 version.o : version.c es.h config.h stdenv.h 

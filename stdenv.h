@@ -1,4 +1,4 @@
-/* stdenv.h -- set up an environment we can use ($Revision: 1.22 $) */
+/* stdenv.h -- set up an environment we can use ($Revision: 1.25 $) */
 
 
 /*
@@ -28,6 +28,10 @@
 
 #include <string.h>
 #include <stddef.h>
+
+#if USE_MEMORY
+#include <memory.h>
+#endif
 
 #if USE_STDARG
 #include <stdarg.h>
@@ -235,16 +239,21 @@ extern int getgroups(int, int *);
  * hacks to present a standard system call interface
  */
 
+#ifdef linux
+#include "unistd.h"
+#define setpgrp(a, b)	setpgid(a, b)
+#endif
+
 #if sgi
-#define	setpgrp(a,b)	BSDsetpgrp(a,b)
+#define	setpgrp(a, b)	BSDsetpgrp(a,b)
 #endif
 
 #if SOLARIS
-#define	setpgrp(a,b)	setsid();
+#define	setpgrp(a, b)	setsid();
 #endif
 
 #if HPUX
-#define	setpgrp(a,b)	setpgrp()
+#define	setpgrp(a, b)	setpgrp()
 #endif
 
 #if !HAS_LSTAT
@@ -284,5 +293,7 @@ extern void *qsort(
 
 /* setjmp */
 
+/*
 extern int setjmp(jmp_buf env);
 extern noreturn longjmp(jmp_buf env, int val);
+*/

@@ -1,4 +1,4 @@
-/* util.c -- the kitchen sink ($Revision: 1.4 $) */
+/* util.c -- the kitchen sink ($Revision: 1.5 $) */
 
 #include "es.h"
 
@@ -24,6 +24,19 @@ extern Boolean isabsolute(char *path) {
 	return path[0] == '/'
 	       || (path[0] == '.' && (path[1] == '/'
 				      || (path[1] == '.' && path[2] == '/')));
+}
+
+/* streq2 -- is a string equal to the concatenation of two strings? */
+extern Boolean streq2(const char *s, const char *t1, const char *t2) {
+	int c;
+	assert(s != NULL && t1 != NULL && t2 != NULL);
+	while ((c = *t1++) != '\0')
+		if (c != *s++)
+			return FALSE;
+	while ((c = *t2++) != '\0')
+		if (c != *s++)
+			return FALSE;
+	return *s == '\0';
 }
 
 

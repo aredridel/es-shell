@@ -1,4 +1,4 @@
-/* version.c -- version number ($Revision: 1.12 $) */
+/* version.c -- version number ($Revision: 1.17 $) */
 #include "es.h"
-static const char id[] = "@(#)es version 0.84: 29 Apr 1993";
+static const char id[] = "@(#)es version 0.9-alpha1 29-May-1994";
 const char * const version = id + (sizeof "@(#)" - 1);

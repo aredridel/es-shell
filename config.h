@@ -1,4 +1,4 @@
-/* config.h -- es(1) configuration parameters ($Revision: 1.19 $) */
+/* config.h -- es(1) configuration parameters ($Revision: 1.26 $) */
 
 /*
  * Compile time options
@@ -6,8 +6,10 @@
  *	These options are best set on the command line in the Makefile.
  *	If the machine you use requires a different set of defaults than
  *	is provided, please send mail to
- *		haahr@adobe.com
- *		byron@netapp.com
+ *
+ *		Paul Haahr <haahr@netcom.com>
+ *		Byron Rakitzis <byron@netapp.com>
+ *
  *	If you decide to add things to this file, add them before the
  *	defaults and make sure that they can be overriden by command
  *	line definitions.  (That is, remember to do the #ifndef dance.)
@@ -48,9 +50,10 @@
  *		for every collection.
  *
  *	GCPROTECT
- *		makes the garbage collector disable access to pages that are
- *		in old space, making unforwarded references crasht the interpreter.
- *		requires os/mmu support for enabling and disabling access to pages.
+ *		makes the garbage collector disable access to pages
+ *		that are in old space, making unforwarded references
+ *		crasht the interpreter.  requires os/mmu support for
+ *		enabling and disabling access to pages.
  *
  *	GCVERBOSE
  *		if this is on, it is possible to run the garbage collector
@@ -79,13 +82,14 @@
  *		systems still out there that don't support it?
  *
  *	JOB_PROTECT
- *		set this to true if you want es to perform backgrounding as if
- *		it were a job controlling shell;  that is, if you want background
- *		jobs to be put in new process groups.  this flag is ignored if the
- *		system does not support the job control signals.  since there are
- *		many broken programs that do not behave correctly when backgrounded
- *		in a v7 non-job-control fashion, the default for this option is on,
- *		even though it is ugly.
+ *		set this to true if you want es to perform
+ *		backgrounding as if it were a job controlling shell;
+ *		that is, if you want background jobs to be put in new
+ *		process groups.  this flag is ignored if the system
+ *		does not support the job control signals.  since there
+ *		are many broken programs that do not behave correctly
+ *		when backgrounded in a v7 non-job-control fashion, the
+ *		default for this option is on, even though it is ugly.
  *
  *	PROTECT_ENV
  *		if on, makes all variable names in the environment ``safe'':
@@ -94,6 +98,11 @@
  *
  *	READLINE
  *		true if es is being linked with editline or gnu readline.
+ *
+ *	REF_ASSERTIONS
+ *		if this is on, assertions about the use of the Ref() macro
+ *		will be checked at run-time.  this is only useful if you're
+ *		modifying es source, and makes the binary much larger.
  *
  *	REISER_CPP
  *		true if es is being compiled with a reiser-style preprocessor.
@@ -116,21 +125,31 @@
  *		happen.'')
  *
  *	SYSV_SIGNALS
- *		true if signal handling follows System V behavior; otherwise,
- *		berkeley signals are assumed.
+ *		True if signal handling follows System V behavior;
+ *		otherwise, berkeley signals are assumed.  If you set
+ *		USE_SIGACTION, this value is ignore.  By System V
+ *		behavior, we mean, signal must be called to reinstall
+ *		the signal handler after it is invoked.  This behavior
+ *		is also known as ``unreliable signals.''
  *
  *	USE_CONST
- *		allow const declarations.  if your compiler supports 'em, use 'em.
+ *		allow const declarations.  if your compiler supports 'em,
+ *		use 'em.
  *
  *	USE_DIRENT
  *		if on, <dirent.h> is used; if off, <sys/direct.h>.
  *
+ *	USE_MEMORY
+ *		if on, <memory.h> is used; if off, it's assumed that
+ *		<string.h> does the job.
+ *
  *	USE_SIGACTION
- *		turn this on if your system understands the POSIX.1 sigaction(2)
- *		call.  it's probably better to use this version if you have it.
- *		if sigaction() is used, es assumes that signals have POSIX
- *		semantics, so the SPECIAL_SIGCLD and SYSV_SIGNALS options are
- *		turned off.
+ *		turn this on if your system understands the POSIX.1
+ *		sigaction(2) call.  it's probably better to use this
+ *		version if you have it.  if sigaction() is used, es
+ *		assumes that signals have POSIX semantics, so the
+ *		SPECIAL_SIGCLD and SYSV_SIGNALS options are turned
+ *		off.
  *
  *	USE_SIG_ATOMIC_T
  *		define this on a system which has its own typedef for
@@ -142,20 +161,21 @@
  *		you may need to hack a bit to get that working.
  *
  *	USE_VOLATILE
- *		allow volatile declarations.  if your compiler supports 'em, use 'em.
+ *		allow volatile declarations.  if your compiler
+ *		supports 'em, use 'em.
  *
  *	USE_UNISTD
  *		define this if you have the include file <unistd.h>
  *
  *	USE_WAIT3
- *		this option should be on if your system supports the BSD-style
- *		wait3(2) system call.  by default, it is on.  if this option is
- *		false and the BUILTIN_TIME is true, the times(2) call must exist.
+ *		this option should be on if your system supports the
+ *		BSD-style wait3(2) system call.  by default, it is on.
+ *		if this option is false and the BUILTIN_TIME is true,
+ *		the times(2) call must exist.
  *
  *	VOID_SIGNALS
  *		define this as true if signal handlers are declared with void
- *		return type; otherwise es uses int for signal returns.
- */
+ *		return type; otherwise es uses int for signal returns. */
 
 
 /*
@@ -221,8 +241,14 @@
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/ucb", "/usr/bin", ""
 #endif
+#ifndef	USE_MEMORY
+#define	USE_MEMORY		1
+#endif
 #ifndef	USE_SIGACTION
 #define	USE_SIGACTION		1
+#endif
+#ifndef	GETGROUPS_USES_GID_T
+#define	GETGROUPS_USES_GID_T	1
 #endif
 #endif	/* sun */
 
@@ -245,17 +271,20 @@
 #endif	/* SOLARIS */
 
 
-/* HP/UX 9.0.1 -- from rsalz@osf.org (Rich $alz) */
+/* HP/UX 9.0.1 -- from rsalz@osf.org (Rich $alz) and haahr*/
 
 #if HPUX
+#define _INCLUDE_POSIX_SOURCE	1
+#define _INCLUDE_XOPEN_SOURCE	1
+#define _INCLUDE_HPUX_SOURCE	1
 #ifndef	BSD_LIMITS
 #define BSD_LIMITS		0
 #endif
-#ifndef	USE_DIRENT
-#define	USE_DIRENT		0
-#endif
 #ifndef	USE_WAIT3
 #define USE_WAIT3		0
+#endif
+#ifndef	GETGROUPS_USES_GID_T
+#define GETGROUPS_USES_GID_T	1
 #endif
 #endif
 
@@ -279,7 +308,7 @@
 #define SPECIAL_SIGCLD		1
 #endif
 #ifndef	SYSV_SIGNALS
-#define SYSV_SIGNALS		1
+#define	SYSV_SIGNALS		1
 #endif
 #ifndef	USE_SIGACTION
 #define USE_SIGACTION		1
@@ -296,7 +325,58 @@
 #ifndef	USE_SIGACTION
 #define	USE_SIGACTION		1
 #endif
+#ifndef	INITIAL_PATH
+#define	INITIAL_PATH		"/usr/bin", ""
+#endif
 #endif	/* OSF1 */
+
+/* OSF/1 on HP snakes -- from John Robert LoVerso <loverso@osf.org> */
+
+#ifdef __hp_osf
+#define __NO_FP_VARARGS		/* avoid bug compiling print.c */
+#endif
+
+
+/* DEC Ultrix 4.2 -- from render@massive.uccs.edu (Hal Render) */
+
+#if ultrix
+#ifndef USE_SIGACTION
+#define USE_SIGACTION		1
+#endif
+#ifndef USE_SIG_ATOMIC_T
+#define USE_SIG_ATOMIC_T	1
+#endif
+#endif /* ultrix */
+
+
+/* Linux -- from alane@wozzle.linet.org */
+
+#ifdef linux
+#ifndef	GETGROUPS_USES_GID_T
+#define	GETGROUPS_USES_GID_T	1
+#endif
+#ifndef	USE_SIGACTION
+#define	USE_SIGACTION		1
+#endif
+#endif
+
+/* 386BSD -- from dbarker@mulga.awadi.com.AU (Dave Barker) */
+
+#if __386BSD__
+#ifndef DEVFD
+#define DEVFD			1
+#endif
+#ifndef	USE_SIGACTION
+#define USE_SIGACTION		1
+#endif
+#ifndef	INITIAL_PATH
+#define	INITIAL_PATH		"/usr/sbin", "/sbin", "/usr/bin", "/bin", ""
+#endif
+#define SIG_ERR			BADSIG
+#ifndef	REQUIRE_STAT
+#define REQUIRE_STAT		1
+#endif
+#endif
 
 
 /*
@@ -371,6 +451,10 @@
 #define	READLINE		0
 #endif
 
+#ifndef	REF_ASSERTIONS
+#define	REF_ASSERTIONS		0
+#endif
+
 #ifndef	REISER_CPP
 #define	REISER_CPP		0
 #endif
@@ -393,6 +477,10 @@
 
 #ifndef	USE_DIRENT
 #define	USE_DIRENT		1
+#endif
+
+#ifndef	USE_MEMORY
+#define	USE_MEMORY		0
 #endif
 
 #ifndef	USE_SIG_ATOMIC_T
@@ -441,7 +529,7 @@
 
 #if USE_SIGACTION
 #undef	SPECIAL_SIGCLD
-#undef	SYSV_SIGNALS
 #define	SPECIAL_SIGCLD		0
+#undef	SYSV_SIGNALS
 #define	SYSV_SIGNALS		0
 #endif

@@ -1,4 +1,4 @@
-/* str.c -- es string operations ($Revision: 1.2 $) */
+/* str.c -- es string operations ($Revision: 1.3 $) */
 
 #include "es.h"
 #include "gc.h"
@@ -18,7 +18,7 @@ extern char *strv(const char *fmt, va_list args) {
 	Buffer *buf;
 	Format format;
 
-	gcdisable(0);
+	gcdisable();
 	buf = openbuffer(0);
 	format.u.p	= buf;
 	format.args	= args;
@@ -88,7 +88,7 @@ extern char *mprint VARARGS1(const char *, fmt) {
 DefineTag(StrList, static);
 
 extern StrList *mkstrlist(char *str, StrList *next) {
-	gcdisable(0);
+	gcdisable();
 	assert(str != NULL);
 	Ref(StrList *, list, gcnew(StrList));
 	list->str = str;

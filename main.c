@@ -1,4 +1,4 @@
-/* main.c -- initialization for es ($Revision: 1.13 $) */
+/* main.c -- initialization for es ($Revision: 1.19 $) */
 
 #include "es.h"
 
@@ -9,7 +9,7 @@ Boolean gcverbose	= FALSE;	/* -G */
 Boolean gcinfo		= FALSE;	/* -I */
 #endif
 
-#if !HPUX
+#if !HPUX && !defined(linux)
 extern int getopt (int argc, char **argv, const char *optstring);
 #endif
 extern int optind;
@@ -36,7 +36,7 @@ static void initpath(void) {
 	
 	Ref(List *, list, NULL);
 	for (i = arraysize(path); i-- > 0;) {
-		Term *t = mkterm((char *) path[i], NULL);
+		Term *t = mkstr((char *) path[i]);
 		list = mklist(t, list);
 	}
 	vardef("path", NULL, list);
@@ -45,7 +45,28 @@ static void initpath(void) {
 
 /* initpid -- set $pid for this shell */
 static void initpid(void) {
-	vardef("pid", NULL, mklist(mkterm(str("%d", getpid()), NULL), NULL));
+	vardef("pid", NULL, mklist(mkstr(str("%d", getpid())), NULL));
+}
+
+/* runesrc -- run the user's profile, if it exists */
+static void runesrc(void) {
+	char *esrc = str("%L/.esrc", varlookup("home", NULL), "\001");
+	int fd = eopen(esrc, oOpen);
+	if (fd != -1) {
+		ExceptionHandler
+			runfd(fd, esrc, 0);
+		CatchException (e)
+			if (termeq(e->term, "exit"))
+				exit(exitstatus(e->next));
+			else if (termeq(e->term, "error"))
+				eprint("%L\n",
+				       e->next == NULL ? NULL : e->next->next,
+				       " ");
+			else if (!issilentsignal(e))
+				eprint("uncaught exception: %L\n", e, " ");
+			return;
+		EndExceptionHandler
+	}
 }
 
 /* usage -- print usage message and die */
@@ -63,15 +84,23 @@ static noreturn usage(void) {
 		"	-p	don't load functions from the environment\n"
 		"	-o	don't open stdin, stdout, and stderr if they were closed\n"
 		"	-d	don't ignore SIGQUIT or SIGTERM\n"
+#if GCINFO
+		"	-I	print garbage collector information\n"
+#endif
+#if GCVERBOSE
+		"	-G	print verbose garbage collector information\n"
+#endif
+#if LISPTREES
+		"	-L	print parser results in LISP format\n"
+#endif
 	);
 	exit(1);
 }
 
+
 /* main -- initialize, parse command arguments, and start running */
 int main(int argc, char **argv) {
 	int c;
-	List *e;
-	Handler h;
 	volatile int ac;
 	char **volatile av;
 
@@ -144,49 +173,53 @@ getopt_done:
 	ac = argc;
 	av = argv;
 
-	roothandler = &h;
-	if ((e = pushhandler(&h)) != NULL) {
-		if (streq(getstr(e->term), "error"))
-			eprint("%L\n", e->next == NULL ? NULL : e->next->next, " ");
+	ExceptionHandler
+		roothandler = &_localhandler;	/* unhygeinic */
+
+		initinput();
+		initprims();
+		initvars();
+	
+		runinitial();
+	
+		initpath();
+		initpid();
+		initsignals(runflags & run_interactive, allowquit);
+		hidevariables();
+		initenv(environ, protected);
+	
+		if (loginshell)
+			runesrc();
+	
+		if (cmd == NULL && !stdin && optind < ac) {
+			int fd;
+			char *file = av[optind++];
+			if ((fd = eopen(file, oOpen)) == -1) {
+				eprint("%s: %s\n", file, strerror(errno));
+				return 1;
+			}
+			vardef("*", NULL, listify(ac - optind, av + optind));
+			vardef("0", NULL, mklist(mkstr(file), NULL));
+			return exitstatus(runfd(fd, file, runflags));
+		}
+	
+		vardef("*", NULL, listify(ac - optind, av + optind));
+		vardef("0", NULL, mklist(mkstr(av[0]), NULL));
+		if (cmd != NULL)
+			return exitstatus(runstring(cmd, NULL, runflags));
+		return exitstatus(runfd(0, "stdin", runflags));
+
+	CatchException (e)
+
+		if (termeq(e->term, "exit"))
+			return exitstatus(e->next);
+		else if (termeq(e->term, "error"))
+			eprint("%L\n",
+			       e->next == NULL ? NULL : e->next->next,
+			       " ");
 		else if (!issilentsignal(e))
 			eprint("uncaught exception: %L\n", e, " ");
 		return 1;
-	}
 
-	initinput();
-	initprims();
-	initvars();
-
-	runinitial();
-
-	initpath();
-	initpid();
-	initsignals(runflags & run_interactive, allowquit);
-	hidevariables();
-	initenv(environ, protected);
-
-	if (loginshell) {
-		char *esrc = str("%L/.esrc", varlookup("home", NULL), "\001");
-		int fd = eopen(esrc, oOpen);
-		if (fd != -1)
-			runfd(fd, esrc, 0);
-	}
-
-	if (cmd == NULL && !stdin && optind < ac) {
-		int fd;
-		char *file = av[optind++];
-		if ((fd = eopen(file, oOpen)) == -1) {
-			eprint("%s: %s\n", file, strerror(errno));
-			return 1;
-		}
-		vardef("*", NULL, listify(ac - optind, av + optind));
-		vardef("0", NULL, mklist(mkterm(file, NULL), NULL));
-		return exitstatus(runfd(fd, file, runflags));
-	}
-
-	vardef("*", NULL, listify(ac - optind, av + optind));
-	vardef("0", NULL, mklist(mkterm(av[0], NULL), NULL));
-	if (cmd != NULL)
-		return exitstatus(runstring(cmd, NULL, runflags));
-	return exitstatus(runfd(0, "stdin", runflags));
+	EndExceptionHandler
 }

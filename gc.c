@@ -1,4 +1,4 @@
-/* gc.c -- copying garbage collector for es ($Revision: 1.14 $) */
+/* gc.c -- copying garbage collector for es ($Revision: 1.17 $) */
 
 #define	GARBAGE_COLLECTOR	1	/* for es.h */
 
@@ -328,8 +328,10 @@ extern void *forward(void *p) {
 /* scanroots -- scan a rootlist */
 static void scanroots(Root *rootlist) {
 	Root *root;
-	for (root = rootlist; root != NULL; root = root->next)
+	for (root = rootlist; root != NULL; root = root->next) {
+		VERBOSE(("GC root at %8lx: %8lx\n", root->p, *root->p));
 		*root->p = forward(*root->p);
+	}
 }
 
 /* scanspace -- scan new space until it is up to date */
@@ -368,15 +370,23 @@ extern void gcenable(void) {
 		gc();
 }
 
-/* gcdisable -- disable collections, collect first if space needed */
-extern void gcdisable(size_t minfree) {
+/* gcdisable -- disable collections */
+extern void gcdisable(void) {
 	assert(gcblocked >= 0);
-	if (!gcblocked && SPACEFREE(new) < minfree) {
+	++gcblocked;
+}
+
+/* gcreserve -- provoke a collection if there's not a certain amount of space around */
+extern void gcreserve(size_t minfree) {
+	if (SPACEFREE(new) < minfree) {
 		if (minspace < minfree)
 			minspace = minfree;
 		gc();
 	}
-	++gcblocked;
+#if GCALWAYS
+	else
+		gc();
+#endif
 }
 
 /* gcisblocked -- is collection disabled? */
@@ -505,7 +515,7 @@ DefineTag(String, notstatic);
 extern char *gcndup(const char *s, size_t n) {
 	char *ns;
 
-	gcdisable(0);
+	gcdisable();
 	ns = gcalloc((n + 1) * sizeof (char), &StringTag);
 	memcpy(ns, s, n);
 	ns[n] = '\0';
@@ -616,6 +626,7 @@ static char *tree2name(NodeKind k) {
 	case nList:	return "List";
 	case nLocal:	return "Local";
 	case nMatch:	return "Match";
+	case nExtract:	return "Extract";
 	case nVarsub:	return "Varsub";
 	}
 }
@@ -632,6 +643,7 @@ static char *tree2name(NodeKind k) {
 	};
 
 #include "var.h"
+#include "term.h"
 
 
 static size_t dump(Tag *t, void *p) {

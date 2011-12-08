@@ -1,4 +1,4 @@
-/* term.c -- operations on terms ($Revision: 1.5 $) */
+/* term.c -- operations on terms ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"

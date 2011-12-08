@@ -1,4 +1,4 @@
-/* opt.c -- option parsing ($Revision: 1.4 $) */
+/* opt.c -- option parsing ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 

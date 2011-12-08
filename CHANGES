@@ -1,5 +1,51 @@
-CHANGES		-*- mode: indented-text -*- ($Revision: 1.2 $)
+CHANGES		-*- mode: indented-text -*- ($Revision: 1.4 $)
 =======
+
+0.9-alpha2 to 0.9beta
+---------------------
+
+Prototypes are only provided if they are not in the standard header
+files.  
+
+Es no longer provides its own strerror.  If there is a strerror, it is
+used.  If not, we try a hack with sys_errlist.  Hopefully one of these
+two will be there.
+
+Es now supports building in directories that are not the source
+directory.  This follows the standard GNU $(srcdir) conventions.
+
+The POSIX sigsetjmp problem appeared again in the form of a macro in
+some versions of linux.  Therefore, there is yet another little
+conditional around the setjmp and longjmp macros to make sure that all
+is ok.
+
+0.9-alpha1 to 0.9-alpha2
+-----------------------
+
+Es now uses GNU autoconf rather than the config.h/stdenv.h model.
+
+Another version of getenv.  Some libraries and operating systems do
+funny things with getenv, making the back mentioned below fail, dumping
+core in getopt (linux and GNU getopt) and before main(!) (FreeBSD 2.1.0)
+demonstrated this. 
+
+Variable argument lists for variable arity C functions are not lvalues.
+This occurs, at least, on the powerpc (see the GCC header files for an
+example of what it does).  This memcpy's those, and assigns the others.
+
+The type used for bsd limits is extracted from the header files.  This
+is necessary because FreeBSD (and likely other BSD 4.4 systems) use
+quad_t rather than long to represent the values in the rlimit
+structure.  This could, possibly, become a problem as more operating
+systems go `64 bit'
+
+POSIX systems provide sigsetjmp and siglongjmp.  These are exactly like
+setjmp and longjmp except that setjmp and longjmp do not restore
+signals.  On systems on which these functions are available, they are
+used. 
+
+There are a number of patches to fix `little' bugs.  
+
 
 0.84 to 0.9-alpha1
 ------------------

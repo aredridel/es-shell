@@ -1,4 +1,4 @@
-/* prim.c -- primitives and primitive dispatching ($Revision: 1.10 $) */
+/* prim.c -- primitives and primitive dispatching ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "prim.h"

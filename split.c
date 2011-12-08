@@ -1,4 +1,4 @@
-/* split.c -- split strings based on separators ($Revision: 1.6 $) */
+/* split.c -- split strings based on separators ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"

@@ -1,4 +1,4 @@
-/* config.h -- es(1) configuration parameters ($Revision: 1.26 $) */
+/* config.h -- es(1) configuration parameters ($Revision: 1.1.1.1 $) */
 
 /*
  * Compile time options
@@ -26,7 +26,7 @@
  *		if this is on, the time builtin is included.  by default, it is
  *		on, but feel free to turn it off.  see also USE_WAIT3.
  *
- *	DEVFD
+ *	HAVE_DEV_FD
  *		turn this on if your system supports /dev/fd for >{} and <{}
  *
  *	DEVFD_PATH
@@ -183,54 +183,30 @@
  *	please send new configurations to haahr@adobe.com and byron@netapp.com
  */
 
+#include "config.h"
+
+#if HAVE_SIGRELSE && HAVE_SIGHOLD
+# define SYSV_SIGNALS 1
+#endif
+
+#if HAVE_LIBREADLINE || HAVE_LIBEDITLINE
+# define READLINE 1
+#endif
 
 /* NeXT defaults */
 
 #if NeXT
-#ifndef	USE_DIRENT
-#define	USE_DIRENT		0
-#endif
 #ifndef	USE_SIG_ATOMIC_T
 #define	USE_SIG_ATOMIC_T	1
 #endif
-#ifndef	USE_UNISTD
-#define	USE_UNISTD		0
-#endif
 #endif	/* NeXT */
-
-
-/* AIX defaults -- DaviD W. Sanderson */
-
-#if _AIX
-#ifndef	GETGROUPS_USES_GID_T
-#define	GETGROUPS_USES_GID_T	1
-#endif
-#ifndef	SPECIAL_SIGCLD
-#define	SPECIAL_SIGCLD		1
-#endif
-#ifndef	SYSV_SIGNALS
-#define	SYSV_SIGNALS		1
-#endif
-#ifndef	USE_SIGACTION
-#define	USE_SIGACTION		1
-#endif
-#endif	/* _AIX */
 
 
 /* Irix defaults */
 
 #if sgi
-#ifndef	GETGROUPS_USES_GID_T
-#define	GETGROUPS_USES_GID_T	1
-#endif
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/bsd", "/usr/sbin", "/usr/bin", "/bin", ""
-#endif
-#ifndef	SPECIAL_SIGCLD
-#define	SPECIAL_SIGCLD		1
-#endif
-#ifndef	SYSV_SIGNALS
-#define	SYSV_SIGNALS		1
 #endif
 #endif	/* sgi */
 
@@ -241,34 +217,7 @@
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/ucb", "/usr/bin", ""
 #endif
-#ifndef	USE_MEMORY
-#define	USE_MEMORY		1
-#endif
-#ifndef	USE_SIGACTION
-#define	USE_SIGACTION		1
-#endif
-#ifndef	GETGROUPS_USES_GID_T
-#define	GETGROUPS_USES_GID_T	1
-#endif
 #endif	/* sun */
-
-
-/* Solaris 2 (SunOS 5.x) defaults */
-
-#if SOLARIS
-#ifndef	SPECIAL_SIGCLD
-#define	SPECIAL_SIGCLD		1
-#endif
-#ifndef	SYSV_SIGNALS
-#define	SYSV_SIGNALS		1
-#endif
-#ifndef	USE_SIGACTION
-#define	USE_SIGACTION		0
-#endif
-#ifndef	USE_WAIT3
-#define	USE_WAIT3		0
-#endif
-#endif	/* SOLARIS */
 
 
 /* HP/UX 9.0.1 -- from rsalz@osf.org (Rich $alz) and haahr*/
@@ -277,42 +226,12 @@
 #define _INCLUDE_POSIX_SOURCE	1
 #define _INCLUDE_XOPEN_SOURCE	1
 #define _INCLUDE_HPUX_SOURCE	1
-#ifndef	BSD_LIMITS
-#define BSD_LIMITS		0
-#endif
-#ifndef	USE_WAIT3
-#define USE_WAIT3		0
-#endif
-#ifndef	GETGROUPS_USES_GID_T
-#define GETGROUPS_USES_GID_T	1
-#endif
 #endif
 
 
 /* SCO Xenix -- from steveo@world.std.com (Steven W Orr) for SCO-ODT-1.1 */
 
 #if sco
-#ifndef	BSD_LIMITS
-#define BSD_LIMITS		0
-#endif
-#ifndef	GETGROUPS_USES_GID_T
-#define GETGROUPS_USES_GID_T	1
-#endif
-#ifndef	HAS_LSTAT
-#define HAS_LSTAT		0
-#endif
-#ifndef	KERNEL_POUNDBANG
-#define KERNEL_POUNDBANG	0
-#endif
-#ifndef	SPECIAL_SIGCLD
-#define SPECIAL_SIGCLD		1
-#endif
-#ifndef	SYSV_SIGNALS
-#define	SYSV_SIGNALS		1
-#endif
-#ifndef	USE_SIGACTION
-#define USE_SIGACTION		1
-#endif
 #ifndef	USE_SIG_ATOMIC_T
 #define USE_SIG_ATOMIC_T	1
 #endif
@@ -322,9 +241,6 @@
 /* OSF/1 -- this is taken from the DEC Alpha */
 
 #if OSF1
-#ifndef	USE_SIGACTION
-#define	USE_SIGACTION		1
-#endif
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/bin", ""
 #endif
@@ -340,35 +256,15 @@
 /* DEC Ultrix 4.2 -- from render@massive.uccs.edu (Hal Render) */
 
 #if ultrix
-#ifndef USE_SIGACTION
-#define USE_SIGACTION		1
-#endif
 #ifndef USE_SIG_ATOMIC_T
 #define USE_SIG_ATOMIC_T	1
 #endif
 #endif /* ultrix */
 
 
-/* Linux -- from alane@wozzle.linet.org */
-
-#ifdef linux
-#ifndef	GETGROUPS_USES_GID_T
-#define	GETGROUPS_USES_GID_T	1
-#endif
-#ifndef	USE_SIGACTION
-#define	USE_SIGACTION		1
-#endif
-#endif
-
 /* 386BSD -- from dbarker@mulga.awadi.com.AU (Dave Barker) */
 
 #if __386BSD__
-#ifndef DEVFD
-#define DEVFD			1
-#endif
-#ifndef	USE_SIGACTION
-#define USE_SIGACTION		1
-#endif
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/sbin", "/sbin", "/usr/bin", "/bin", ""
 #endif
@@ -387,16 +283,8 @@
 #define	ASSERTIONS		1
 #endif
 
-#ifndef	BSD_LIMITS
-#define	BSD_LIMITS		1
-#endif
-
 #ifndef	BUILTIN_TIME
 #define	BUILTIN_TIME		1
-#endif
-
-#ifndef	DEVFD
-#define	DEVFD			0
 #endif
 
 #ifndef	DEVFD_PATH
@@ -423,20 +311,8 @@
 #define	GCVERBOSE		0
 #endif
 
-#ifndef	GETGROUPS_USES_GID_T
-#define	GETGROUPS_USES_GID_T	0
-#endif
-
-#ifndef	HAS_LSTAT
-#define	HAS_LSTAT		1
-#endif
-
 #ifndef	INITIAL_PATH
 #define	INITIAL_PATH		"/usr/ucb", "/usr/bin", "/bin", ""
-#endif
-
-#ifndef	KERNEL_POUNDBANG
-#define	KERNEL_POUNDBANG	1
 #endif
 
 #ifndef	JOB_PROTECT
@@ -463,54 +339,17 @@
 #define	SHOW_DOT_FILES		0
 #endif
 
-#ifndef	SPECIAL_SIGCLD
-#define	SPECIAL_SIGCLD		0
-#endif
-
 #ifndef	SYSV_SIGNALS
 #define	SYSV_SIGNALS		0
 #endif
 
-#ifndef	USE_CONST
-#define	USE_CONST		1
-#endif
-
-#ifndef	USE_DIRENT
-#define	USE_DIRENT		1
-#endif
-
-#ifndef	USE_MEMORY
-#define	USE_MEMORY		0
+#ifndef	HAVE_MEMORY
+#define	HAVE_MEMORY		0
 #endif
 
 #ifndef	USE_SIG_ATOMIC_T
 #define	USE_SIG_ATOMIC_T	0
 #endif
-
-#ifndef USE_SIGACTION
-#define	USE_SIGACTION		0
-#endif
-
-#ifndef	USE_STDARG
-#define	USE_STDARG		1
-#endif
-
-#ifndef	USE_UNISTD
-#define	USE_UNISTD		1
-#endif
-
-#ifndef	USE_VOLATILE
-#define	USE_VOLATILE		1
-#endif
-
-#ifndef	USE_WAIT3
-#define	USE_WAIT3		1
-#endif
-
-#ifndef	VOID_SIGNALS
-#define	VOID_SIGNALS		1
-#endif
-
 
 /*
  * enforcing choices that must be made
@@ -527,9 +366,7 @@
 #define	GCVERBOSE		1
 #endif
 
-#if USE_SIGACTION
-#undef	SPECIAL_SIGCLD
-#define	SPECIAL_SIGCLD		0
+#if HAVE_SIGACTION
 #undef	SYSV_SIGNALS
 #define	SYSV_SIGNALS		0
 #endif

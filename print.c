@@ -1,4 +1,4 @@
-/* print.c -- formatted printing routines ($Revision: 1.6 $) */
+/* print.c -- formatted printing routines ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "print.h"
@@ -267,7 +267,14 @@ extern int printfmt(Format *format, const char *fmt) {
 
 extern int fmtprint VARARGS2(Format *, format, const char *, fmt) {
 	int n = -format->flushed;
+#if NO_VA_LIST_ASSIGN
+	va_list saveargs;
+
+	memcpy(saveargs, format->args, sizeof(va_list));
+#else
 	va_list saveargs = format->args;
+#endif
+
 
 	VA_START(format->args, fmt);
 	n += printfmt(format, fmt);

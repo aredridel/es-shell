@@ -1,4 +1,4 @@
-/* es.h -- definitions for higher order shell ($Revision: 1.38 $) */
+/* es.h -- definitions for higher order shell ($Revision: 1.2 $) */
 
 #include "config.h"
 #include "stdenv.h"
@@ -265,7 +265,7 @@ extern void sortvector(Vector *v);
 
 /* util.c */
 
-extern char *strerror(int err);
+extern char *esstrerror(int err);
 extern void uerror(char *msg);
 extern void *ealloc(size_t n);
 extern void *erealloc(void *p, size_t n);

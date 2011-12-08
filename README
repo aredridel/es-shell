@@ -1,4 +1,13 @@
-This is the README file for es, version 0.9-alpha1
+This is the README file for es, version 0.9-beta1
+
+I include the original README file below.  See the CHANGES file for 
+a list of changes to the shell.  See the INSTALL file for instructions 
+for installing es.  In all other ways, I believe that this file is up
+to date.
+
+Soren Dayton
+csdayton@cs.uchicago.edu
+
 
 Es is an extensible shell.  The language was derived from the Plan 9
 shell, rc, and was influenced by functional programming languages,

@@ -1,6 +1,8 @@
-/* parse.y -- grammar for es ($Revision: 1.8 $) */
+/* parse.y -- grammar for es ($Revision: 1.2 $) */
 
 %{
+/* Some yaccs insist on including stdlib.h */
+#define _STDLIB_H
 #include "es.h"
 #include "input.h"
 #include "syntax.h"
@@ -126,7 +128,7 @@ nl	:
 caret 	:
 	| '^'
 
-binder	: LOCAL		{ $$ = nLocal; }
+binder	: LOCAL	        { $$ = nLocal; }
 	| LET		{ $$ = nLet; }
 	| FOR		{ $$ = nFor; }
 	| CLOSURE	{ $$ = nClosure; }
@@ -134,7 +136,7 @@ binder	: LOCAL		{ $$ = nLocal; }
 keyword	: '!'		{ $$ = "!"; }
 	| '~'		{ $$ = "~"; }
 	| EXTRACT	{ $$ = "~~"; }
-	| LOCAL		{ $$ = "local"; }
+        | LOCAL 	{ $$ = "local"; }
 	| LET		{ $$ = "let"; }
 	| FOR		{ $$ = "for"; }
 	| FN		{ $$ = "fn"; }

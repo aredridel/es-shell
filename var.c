@@ -1,4 +1,4 @@
-/* var.c -- es variables ($Revision: 1.24 $) */
+/* var.c -- es variables ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"
@@ -348,6 +348,11 @@ extern void initvars(void) {
 	vars = mkdict();
 	noexport = NULL;
 	env = mkvector(10);
+#if ABUSED_GETENV
+# if READLINE
+	initgetenv();
+# endif
+#endif
 }
 
 /* importvar -- import a single environment variable */

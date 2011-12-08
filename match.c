@@ -1,4 +1,4 @@
-/* match.c -- pattern matching routines ($Revision: 1.5 $) */
+/* match.c -- pattern matching routines ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 
@@ -208,6 +208,7 @@ static List *extractsinglematch(const char *subject, const char *pattern,
 					assert(*s == '[');
 					break;
 				}
+				i += j;
 			    }
 			    /* FALLTHROUGH */
 			    case '?':

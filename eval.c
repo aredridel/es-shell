@@ -1,4 +1,4 @@
-/* eval.c -- evaluation of lists and trees ($Revision: 1.34 $) */
+/* eval.c -- evaluation of lists and trees ($Revision: 1.2 $) */
 
 #include "es.h"
 
@@ -18,7 +18,7 @@ static noreturn failexec(char *file, List *args) {
 		RefEnd(list);
 		errno = olderror;
 	}
-	eprint("%s: %s\n", file, strerror(errno));
+	eprint("%s: %s\n", file, esstrerror(errno));
 	exit(1);
 }
 

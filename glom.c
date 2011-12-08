@@ -1,4 +1,4 @@
-/* glom.c -- walk parse tree to produce list ($Revision: 1.8 $) */
+/* glom.c -- walk parse tree to produce list ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"

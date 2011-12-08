@@ -1,4 +1,4 @@
-# Makefile for es ($Revision: 1.18 $)
+# Makefile for es ($Revision: 1.4 $)
 
 # Some of the advice here is rather old and out of date.  The
 # configuration of es will be improved by 0.9beta, but I didn't
@@ -26,17 +26,26 @@
 # to get definitions of all signals from <sys/signal.h>.
 # _POSIX_SOURCE, _XOPEN_SOURCE are the obvious ones.
 
-# To build es on an SGI running Yellow pages, set LIBS = -lsun
+prefix  = @prefix@
+exec_prefix	= @exec_prefix@
+mandir	= @mandir@
+bindir	= @bindir@
+srcdir  = @srcdir@
 
-# I've been told a good set of CFLAGS for linux is -g -O2 -m486 -Wall -Dlinux.
 
 SHELL	= /bin/sh
-CC	= cc
-#CC	= gcc
-CFLAGS	= -g
-#CFLAGS	= -g -O -Wall
-LDFLAGS	=
-LIBS	=
+CC	= @CC@
+INSTALL	= @INSTALL@
+
+
+## Bison is generating incorrect parsers.  So do not use, for now
+# YACC = @YACC@
+
+CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) @CFLAGS@
+LDFLAGS	= $(ADDLDFLAGS) @LDFLAGS@
+LIBS	= $(ADDLIBS) @LIBS@
+
+VPATH = $(srcdir)
 
 HFILES	= config.h es.h gc.h input.h prim.h print.h sigmsgs.h \
 	  stdenv.h syntax.h term.h var.h
@@ -53,6 +62,8 @@ OFILES	= access.o closure.o conv.o dict.o eval.o except.o fd.o gc.o glob.o \
 OTHER	= Makefile parse.y mksignal
 GEN	= esdump y.tab.c y.tab.h y.output token.h sigmsgs.c initial.c
 
+SIGFILES = @SIGFILES@
+
 es	: ${OFILES} initial.o
 	${CC} -o es ${LDFLAGS} ${OFILES} initial.o ${LIBS}
 
@@ -62,25 +73,39 @@ esdump	: ${OFILES} dump.o
 clean	:
 	rm -f es ${OFILES} ${GEN} dump.o initial.o
 
-trip	: es trip.es
-	./es < trip.es
+distclean:	clean
+	rm -f config.cache config.log config.h Makefile cscope.out tags TAGS core cs.out config.status
+
+MANIFEST:
+	find . -type f | sed s/..// > MANIFEST
+
+install : es
+	$(INSTALL) $(srcdir)/es $(bindir)
+	$(INSTALL) $(srcdir)/es.1 $(mandir)/man1
+
+test	: trip
+
+trip	: es $(srcdir)/trip.es
+	./es < $(srcdir)/trip.es
 
 src	:
 	@echo ${OTHER} ${CFILES} ${HFILES}
 
 y.tab.c y.tab.h : parse.y
-	${YACC} -vd parse.y
+	${YACC} -vd $(srcdir)/parse.y
 
 token.h : y.tab.h
 	-cmp -s y.tab.h token.h || cp y.tab.h token.h
 
-initial.c : esdump initial.es
-	./esdump < initial.es > initial.c
+initial.c : esdump $(srcdir)/initial.es
+	./esdump < $(srcdir)/initial.es > initial.c
 
-sigmsgs.c : mksignal /usr/include/sys/signal.h
-	sh mksignal /usr/include/sys/signal.h > sigmsgs.c
+sigmsgs.c : mksignal $(SIGFILES)
+	sh $(srcdir)/mksignal $(SIGFILES) > sigmsgs.c
+
+config.h  : config.h.in
+	./configure
 # for linux use:
-#	sh mksignal /usr/include/linux/signal.h /usr/include/signal.h > sigmsgs.c
 
 # --- dependencies ---
 

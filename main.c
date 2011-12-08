@@ -1,4 +1,4 @@
-/* main.c -- initialization for es ($Revision: 1.19 $) */
+/* main.c -- initialization for es ($Revision: 1.3 $) */
 
 #include "es.h"
 
@@ -9,13 +9,14 @@ Boolean gcverbose	= FALSE;	/* -G */
 Boolean gcinfo		= FALSE;	/* -I */
 #endif
 
-#if !HPUX && !defined(linux)
-extern int getopt (int argc, char **argv, const char *optstring);
-#endif
+/* #if 0 && !HPUX && !defined(linux) && !defined(sgi) */
+/* extern int getopt (int argc, char **argv, const char *optstring); */
+/* #endif */
+
 extern int optind;
 extern char *optarg;
 
-extern int isatty(int fd);
+/* extern int isatty(int fd); */
 extern char **environ;
 
 
@@ -107,7 +108,7 @@ int main(int argc, char **argv) {
 	volatile int runflags = 0;		/* -[einvxL] */
 	volatile Boolean protected = FALSE;	/* -p */
 	volatile Boolean allowquit = FALSE;	/* -d */
-	volatile Boolean stdin = FALSE;		/* -s */
+	volatile Boolean cmd_stdin = FALSE;		/* -s */
 	volatile Boolean loginshell = FALSE;	/* -l or $0[0] == '-' */
 	Boolean keepclosed = FALSE;		/* -o */
 	const char *volatile cmd = NULL;	/* -c */
@@ -139,7 +140,7 @@ int main(int argc, char **argv) {
 		case 'p':	protected = TRUE;		break;
 		case 'o':	keepclosed = TRUE;		break;
 		case 'd':	allowquit = TRUE;		break;
-		case 's':	stdin = TRUE;			goto getopt_done;
+		case 's':	cmd_stdin = TRUE;			goto getopt_done;
 #if GCVERBOSE
 		case 'G':	gcverbose = TRUE;		break;
 #endif
@@ -151,7 +152,7 @@ int main(int argc, char **argv) {
 		}
 
 getopt_done:
-	if (stdin && cmd != NULL) {
+	if (cmd_stdin && cmd != NULL) {
 		eprint("es: -s and -c are incompatible\n");
 		exit(1);
 	}
@@ -164,7 +165,7 @@ getopt_done:
 
 	if (
 		cmd == NULL
-	     && (optind == argc || stdin)
+	     && (optind == argc || cmd_stdin)
 	     && (runflags & run_interactive) == 0
 	     && isatty(0)
 	)
@@ -191,11 +192,11 @@ getopt_done:
 		if (loginshell)
 			runesrc();
 	
-		if (cmd == NULL && !stdin && optind < ac) {
+		if (cmd == NULL && !cmd_stdin && optind < ac) {
 			int fd;
 			char *file = av[optind++];
 			if ((fd = eopen(file, oOpen)) == -1) {
-				eprint("%s: %s\n", file, strerror(errno));
+				eprint("%s: %s\n", file, esstrerror(errno));
 				return 1;
 			}
 			vardef("*", NULL, listify(ac - optind, av + optind));

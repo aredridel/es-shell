@@ -1,4 +1,4 @@
-/* prim-etc.c -- miscellaneous primitives ($Revision: 1.32 $) */
+/* prim-etc.c -- miscellaneous primitives ($Revision: 1.2 $) */
 
 #define	REQUIRE_PWD	1
 
@@ -64,7 +64,7 @@ PRIM(dot) {
 	lp = lp->next;
 	fd = eopen(file, oOpen);
 	if (fd == -1)
-		fail("$&dot", "%s: %s", file, strerror(errno));
+		fail("$&dot", "%s: %s", file, esstrerror(errno));
 
 	varpush(&star, "*", lp);
 	varpush(&zero, "0", mklist(mkstr(file), NULL));

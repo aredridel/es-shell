@@ -1,4 +1,5 @@
-/* input.c -- read input from files or strings ($Revision: 1.22 $) */
+/* input.c -- read input from files or strings ($Revision: 1.2 $) */
+/* stdgetenv is based on the FreeBSD getenv */
 
 #include "es.h"
 #include "input.h"
@@ -35,6 +36,14 @@ int rl_meta_chars;	/* for editline; ignored for gnu readline */
 extern char *readline(char *);
 extern void add_history(char *);
 extern void rl_reset_terminal(char *);
+extern char *rl_basic_word_break_characters;
+extern char *rl_completer_quote_characters;
+
+#if ABUSED_GETENV
+static char *stdgetenv(const char *);
+static char *esgetenv(const char *);
+static char *(*realgetenv)(const char *) = stdgetenv;
+#endif
 #endif
 
 
@@ -80,7 +89,7 @@ static void loghistory(const char *cmd, size_t len) {
 	if (historyfd == -1) {
 		historyfd = eopen(history, oAppend);
 		if (historyfd == -1) {
-			eprint("history(%s): %s\n", history, strerror(errno));
+			eprint("history(%s): %s\n", history, esstrerror(errno));
 			vardef("history", NULL, NULL);
 			return;
 		}
@@ -189,6 +198,8 @@ static int eoffill(Input *in) {
 /* callreadline -- readline wrapper */
 static char *callreadline(char *prompt) {
 	char *r;
+	if (prompt == NULL)
+		prompt = ""; /* bug fix for readline 2.0 */
 	if (resetterminal) {
 		rl_reset_terminal(NULL);
 		resetterminal = FALSE;
@@ -207,7 +218,7 @@ static char *callreadline(char *prompt) {
 }
 
 /* getenv -- fake version of getenv for readline (or other libraries) */
-extern char *getenv(const char *name) {
+static char *esgetenv(const char *name) {
 	List *value = varlookup(name, NULL);
 	if (value == NULL)
 		return NULL;
@@ -237,6 +248,44 @@ extern char *getenv(const char *name) {
 		RefReturn(string);
 	}
 }
+
+#if ABUSED_GETENV
+
+static char *
+stdgetenv(name)
+	register const char *name;
+{
+	extern char **environ;
+	register int len;
+	register const char *np;
+	register char **p, *c;
+
+	if (name == NULL || environ == NULL)
+		return (NULL);
+	for (np = name; *np && *np != '='; ++np)
+		continue;
+	len = np - name;
+	for (p = environ; (c = *p) != NULL; ++p)
+		if (strncmp(c, name, len) == 0 && c[len] == '=') {
+			return (c + len + 1);
+		}
+	return (NULL);
+}
+
+char *
+getenv(char *name)
+{
+	return realgetenv(name);
+}
+
+extern void
+initgetenv(void)
+{
+	realgetenv = esgetenv;
+}
+
+#endif /* ABUSED_GETENV */
+
 #endif	/* READLINE */
 
 /* fdfill -- fill input buffer by reading from a file descriptor */
@@ -277,7 +326,7 @@ static int fdfill(Input *in) {
 		in->fill = eoffill;
 		in->runflags &= ~run_interactive;
 		if (nread == -1)
-			fail("$&parse", "%s: %s", in->name == NULL ? "es" : in->name, strerror(errno));
+			fail("$&parse", "%s: %s", in->name == NULL ? "es" : in->name, esstrerror(errno));
 		return EOF;
 	}
 
@@ -542,5 +591,7 @@ extern void initinput(void) {
 
 #if READLINE
 	rl_meta_chars = 0;
+	rl_basic_word_break_characters=" \t\n\\'`$><=;|&{()}";
+		rl_completer_quote_characters="'";
 #endif
 }

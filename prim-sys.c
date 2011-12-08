@@ -1,14 +1,20 @@
-/* prim-sys.c -- system call primitives ($Revision: 1.38 $) */
+/* prim-sys.c -- system call primitives ($Revision: 1.2 $) */
 
 #define	REQUIRE_IOCTL	1
 
 #include "es.h"
 #include "prim.h"
 
+#ifdef HAVE_SETRLIMIT
+# define BSD_LIMITS 1
+#else
+# define BSD_LIMITS 0
+#endif
+
 #if BSD_LIMITS || BUILTIN_TIME
 #include <sys/time.h>
 #include <sys/resource.h>
-#if !USE_WAIT3
+#if !HAVE_WAIT3
 #include <sys/times.h>
 #include <limits.h>
 #endif
@@ -83,7 +89,7 @@ PRIM(umask) {
 		if ((t != NULL && *t != '\0') || ((unsigned) mask) > 07777)
 			fail("$&umask", "bad umask: %s", s);
 		if (umask(mask) == -1)
-			fail("$&umask", "umask %04o: %s", mask, strerror(errno));
+			fail("$&umask", "umask %04o: %s", mask, esstrerror(errno));
 		return true;
 	}
 	fail("$&umask", "usage: umask [mask]");
@@ -96,7 +102,7 @@ PRIM(cd) {
 		fail("$&cd", "usage: $&cd directory");
 	dir = getstr(list->term);
 	if (chdir(dir) == -1)
-		fail("$&cd", "chdir %s: %s", dir, strerror(errno));
+		fail("$&cd", "chdir %s: %s", dir, esstrerror(errno));
 	return true;
 }
 
@@ -132,9 +138,6 @@ PRIM(setsignals) {
  */
 
 #if BSD_LIMITS
-extern int getrlimit(int, struct rlimit *);
-extern int setrlimit(int, const struct rlimit *);
-
 typedef struct Suffix Suffix;
 struct Suffix {
 	const char *name;
@@ -194,16 +197,17 @@ static const Limit limits[] = {
 
 static void printlimit(const Limit *limit, Boolean hard) {
 	struct rlimit rlim;
-	long lim;
+	LIMIT_T lim;
 	getrlimit(limit->flag, &rlim);
 	if (hard)
 		lim = rlim.rlim_max;
 	else
 		lim = rlim.rlim_cur;
-	if (lim == RLIM_INFINITY)
+	if (lim == (LIMIT_T) RLIM_INFINITY)
 		print("%-8s\tunlimited\n", limit->name);
 	else {
 		const Suffix *suf;
+
 		for (suf = limit->suffix; suf != NULL; suf = suf->next)
 			if (lim % suf->amount == 0 && (lim != 0 || suf->amount > 1)) {
 				lim /= suf->amount;
@@ -213,8 +217,8 @@ static void printlimit(const Limit *limit, Boolean hard) {
 	}
 }
 
-static long parselimit(const Limit *limit, char *s) {
-	long lim;
+static LIMIT_T parselimit(const Limit *limit, char *s) {
+	LIMIT_T lim;
 	char *t;
 	const Suffix *suf = limit->suffix;
 	if (streq(s, "unlimited"))
@@ -271,7 +275,7 @@ PRIM(limit) {
 		if (lp == NULL)
 			printlimit(lim, hard);
 		else {
-			long n;
+			LIMIT_T n;
 			struct rlimit rlim;
 			getrlimit(lim->flag, &rlim);
 			if ((n = parselimit(lim, getstr(lp->term))) < 0)
@@ -281,7 +285,7 @@ PRIM(limit) {
 			else
 				rlim.rlim_cur = n;
 			if (setrlimit(lim->flag, &rlim) == -1)
-				fail("$&limit", "setrlimit: %s", strerror(errno));
+				fail("$&limit", "setrlimit: %s", esstrerror(errno));
 		}
 	}
 	RefEnd(lp);
@@ -292,7 +296,7 @@ PRIM(limit) {
 #if BUILTIN_TIME
 PRIM(time) {
 
-#if USE_WAIT3
+#if HAVE_WAIT3
 
 	int pid, status;
 	time_t t0, t1;
@@ -321,7 +325,7 @@ PRIM(time) {
 	RefEnd(lp);
 	return mklist(mkstr(mkstatus(status)), NULL);
 
-#else	/* !USE_WAIT3 */
+#else	/* !HAVE_WAIT3 */
 
 	int pid, status;
 	Ref(List *, lp, list);
@@ -365,7 +369,7 @@ PRIM(time) {
 	RefEnd(lp);
 	return mklist(mkstr(mkstatus(status)), NULL);
 
-#endif	/* !USE_WAIT3 */
+#endif	/* !HAVE_WAIT3 */
 
 }
 #endif	/* BUILTIN_TIME */

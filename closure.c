@@ -1,4 +1,4 @@
-/* closure.c -- operations on bindings, closures, lambdas, and thunks ($Revision: 1.12 $) */
+/* closure.c -- operations on bindings, closures, lambdas, and thunks ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"

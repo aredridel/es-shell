@@ -1,4 +1,4 @@
-/* str.c -- es string operations ($Revision: 1.3 $) */
+/* str.c -- es string operations ($Revision: 1.1.1.1 $) */
 
 #include "es.h"
 #include "gc.h"
@@ -21,7 +21,11 @@ extern char *strv(const char *fmt, va_list args) {
 	gcdisable();
 	buf = openbuffer(0);
 	format.u.p	= buf;
+#if NO_VA_LIST_ASSIGN
+	memcpy(format.args, args, sizeof(va_list));
+#else
 	format.args	= args;
+#endif
 	format.buf	= buf->str;
 	format.bufbegin	= buf->str;
 	format.bufend	= buf->str + buf->len;

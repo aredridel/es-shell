@@ -1,4 +1,4 @@
-# initial.es -- set up initial interpreter state ($Revision: 1.59 $)
+# initial.es -- set up initial interpreter state ($Revision: 1.1.1.1 $)
 
 
 #

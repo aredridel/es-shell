@@ -1,4 +1,4 @@
-/* prim-io.c -- input/output and redirection primitives ($Revision: 1.18 $) */
+/* prim-io.c -- input/output and redirection primitives ($Revision: 1.2 $) */
 
 #include "es.h"
 #include "gc.h"
@@ -80,7 +80,7 @@ REDIR(openfile) {
 	lp = lp->next;
 	fd = eopen(name, kind);
 	if (fd == -1)
-		fail("$&openfile", "%s: %s", name, strerror(errno));
+		fail("$&openfile", "%s: %s", name, esstrerror(errno));
 	*srcfdp = fd;
 	RefReturn(lp);
 }
@@ -103,7 +103,7 @@ REDIR(dup) {
 	Ref(List *, lp, list);
 	fd = dup(fdmap(getnumber(getstr(lp->term))));
 	if (fd == -1)
-		fail("$&dup", "dup: %s", strerror(errno));
+		fail("$&dup", "dup: %s", esstrerror(errno));
 	*srcfdp = fd;
 	lp = lp->next;
 	RefReturn(lp);
@@ -133,7 +133,7 @@ static int pipefork(int p[2], int *extra) {
 	volatile int pid = 0;
 
 	if (pipe(p) == -1)
-		fail(caller, "pipe: %s", strerror(errno));
+		fail(caller, "pipe: %s", esstrerror(errno));
 
 	registerfd(&p[0], FALSE);
 	registerfd(&p[1], FALSE);
@@ -244,7 +244,7 @@ PRIM(pipe) {
 	RefReturn(result);
 }
 
-#if DEVFD
+#if HAVE_DEV_FD
 PRIM(readfrom) {
 	int pid, p[2], status;
 	Push push;
@@ -288,6 +288,7 @@ PRIM(readfrom) {
 PRIM(writeto) {
 	int pid, p[2], status;
 	Push push;
+	Handler h;
 
 	caller = "$&writeto";
 	if (length(list) != 3)
@@ -342,7 +343,7 @@ restart:
 		if (errno == EINTR)
 			goto restart;
 		close(fd);
-		fail("$&backquote", "backquote read: %s", strerror(errno));
+		fail("$&backquote", "backquote read: %s", esstrerror(errno));
 	}
 	return endsplit();
 }
@@ -393,7 +394,7 @@ static int read1(int fd) {
 		SIGCHK();
 	} while (nread == -1 && errno == EINTR);
 	if (nread == -1)
-		fail("$&read", strerror(errno));
+		fail("$&read", esstrerror(errno));
 	return nread == 0 ? EOF : buf;
 }
 
@@ -428,7 +429,7 @@ extern Dict *initprims_io(Dict *primdict) {
 	X(backquote);
 	X(newfd);
 	X(here);
-#if DEVFD
+#if HAVE_DEV_FD
 	X(readfrom);
 	X(writeto);
 #endif

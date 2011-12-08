@@ -4,7 +4,7 @@
 #include "stdenv.h"
 
 /*
- * the fundamental es data structures.  
+ * the fundamental es data structures.
  */
 
 typedef struct Tree Tree;
@@ -12,12 +12,10 @@ typedef struct Term Term;
 typedef struct List List;
 typedef struct Binding Binding;
 typedef struct Closure Closure;
-typedef unsigned long Generation;
 
 struct Term {
 	char *str;
 	Closure *closure;
-	Generation gen;
 };
 
 struct List {
@@ -34,6 +32,7 @@ struct Binding {
 struct Closure {
 	Binding	*binding;
 	Tree *tree;
+	int mark;
 };
 
 
@@ -77,28 +76,40 @@ typedef struct {
  * our programming environment
  */
 
+
 /* main.c */
 
-extern Boolean interactive;		/* -i or isatty(input) */
 extern Boolean loginshell;		/* -l or $0[0] == '-' */
 extern Boolean noexecute;		/* -n */
-extern Boolean verbose;			/* -v */
-extern Boolean printcmds;		/* -x */
 extern Boolean exitonfalse;		/* -e */
 
 #if GCVERBOSE
 extern Boolean gcverbose;		/* -G */
 #endif
-#if LISPTREES
-extern Boolean lisptrees;		/* -L */
+#if GCINFO
+extern Boolean gcinfo;			/* -I */
 #endif
+
+
+/* fd.c */
+
+extern void mvfd(int old, int new);
+extern int newfd(void);
+
+#define	UNREGISTERED	(-999)
+extern void registerfd(int *fdp, Boolean closeonfork);
+extern void unregisterfd(int *fdp);
+extern void releasefd(int fd);
+extern void closefds(void);
+
+extern int fdmap(int fd);
+extern int defer_mvfd(Boolean parent, int old, int new);
+extern int defer_close(Boolean parent, int fd);
+extern void undefer(int ticket);
 
 
 /* term.c */
 
-extern Boolean rebound;
-extern Generation generation;
-extern Generation nextgen(void);
 extern Term *mkterm(char *str, Closure *closure);
 extern char *getstr(Term *term);
 extern Closure *getclosure(Term *term);
@@ -155,9 +166,9 @@ extern Boolean listmatch(List *subject, List *pattern, StrList *quote);
 
 /* var.c */
 
-extern void initvars(char **envp, const char *initial, Boolean protected);
+extern void initvars(char **envp, Boolean protected);
 extern char *varname(List *);
-extern List *varlookup(char *, Binding *);
+extern List *varlookup(const char *, Binding *);
 extern List *varlookup2(char *name1, char *name2);
 extern void vardef(char *, Binding *, List *);
 extern void varpush(char *, List *);
@@ -179,9 +190,9 @@ extern void printstatus(int pid, int status);
 /* proc.c */
 
 extern Boolean hasforked;
-extern int efork(Boolean parent, Boolean continuing, Boolean background);
-extern int ewaitfor(int pid);
-
+extern int efork(Boolean parent, Boolean background);
+extern int ewaitfor2(int pid, void *rusage);
+#define	ewaitfor(pid)	ewaitfor2(pid, NULL)
 
 /* which.c */
 
@@ -213,7 +224,7 @@ extern noreturn panic(const char *fmt VARARGS);
 
 /* str.c */
 
-extern char *str(const char *fmt VARARGS);		/* create a gc space string by printing */
+extern char *str(const char *fmt VARARGS);	/* create a gc space string by printing */
 extern char *mprint(const char *fmt VARARGS);	/* create an ealloc space string by printing */
 extern StrList *mkstrlist(char *, StrList *);
 
@@ -232,28 +243,29 @@ extern void uerror(char *msg);
 extern void *ealloc(size_t n);
 extern void *erealloc(void *p, size_t n);
 extern void efree(void *p);
-extern void ewrite(int fd, char *s, size_t n);
+extern char *strdup(const char *s);
+extern void ewrite(int fd, const char *s, size_t n);
 extern long eread(int fd, char *buf, size_t n);
-extern int mvfd(int old, int new);
-extern int cpfd(int old, int new);
 extern Boolean isabsolute(char *path);
 
 
 /* input.c */
 
 extern char *prompt, *prompt2;
-extern List *runstring(const char *str);
+extern Tree *parse(char *esprompt1, char *esprompt2);
 extern Tree *parsestring(const char *str);
-extern List *runfd(int fd);
 extern void sethistory(char *file);
-extern void closefds(void);
-extern void releasefd(int fd);
-
-extern int gchar(void);
-extern void ugchar(int c);
-extern void flushu(void);
+extern Boolean isinteractive(void);
 extern void initinput(void);
 
+extern List *runfd(int fd, const char *name, int flags);
+extern List *runstring(const char *str, const char *name, int flags);
+
+#define	run_interactive		 1	/* -i or $0[0] = '-' */
+#define	run_noexec		 2	/* -n */
+#define	run_echoinput		 4	/* -v */
+#define	run_printcmds		 8	/* -x */
+#define	run_lisptrees		16	/* -L and defined(LISPTREES) */
 
 /* prim.c */
 
@@ -298,7 +310,7 @@ extern const char * const version;
 /* gc.c -- see gc.h for more */
 
 typedef struct Tag Tag;
-#define	gcnew(type)	((type *) gcalloc(sizeof (type), &(CONCAT(type, Tag))))
+#define	gcnew(type)	((type *) gcalloc(sizeof (type), &(CONCAT(type,Tag))))
 
 extern void *gcalloc(size_t n, Tag *t);		/* allocate n with collection tag t */
 extern char *gcdup(const char *s);		/* copy a 0-terminated string into gc space */
@@ -308,10 +320,7 @@ extern void initgc(void);			/* must be called at the dawn of time */
 extern void gc(void);				/* provoke a collection, if enabled */
 extern void gcenable(void);			/* enable collections */
 extern void gcdisable(size_t);			/* disable collections, collect first if space needed */
-
-#ifndef GARBAGE_COLLECTOR
-extern const int gcblocked;
-#endif
+extern Boolean gcisblocked();			/* is collection disabled? */
 
 
 /*
@@ -327,26 +336,33 @@ struct Root {
 extern Root *rootlist;
 
 #define	Ref(t, v, init) \
-	if (0) ; { \
+	if (0) ; else { \
 		t v = init; \
-		Root (CONCAT(__root__, v)); \
-		(CONCAT(__root__, v)).p = (void **) &v; \
-		(CONCAT(__root__, v)).next = rootlist; \
-		rootlist = &(CONCAT(__root__, v))
+		Root (CONCAT(v,__root__)); \
+		(CONCAT(v,__root__)).p = (void **) &v; \
+		(CONCAT(v,__root__)).next = rootlist; \
+		rootlist = &(CONCAT(v,__root__))
 #define	RefPop(v) \
-		assert(rootlist == &(CONCAT(__root__, v))); \
+		assert(rootlist == &(CONCAT(v,__root__))); \
 		assert(rootlist->p == (void **) &v); \
 		rootlist = rootlist->next;
 #define RefEnd(v) \
-		assert(rootlist == &(CONCAT(__root__, v))); \
-		assert(rootlist->p == (void **) &v); \
 		RefPop(v); \
 	}
-#define RefReturn(v)	/* { */	\
-		assert(rootlist == &(CONCAT(__root__, v))); \
-		assert(rootlist->p == (void **) &v); \
+#define RefReturn(v) \
 		RefPop(v); \
 		return v; \
+	}
+#define	RefAdd(e) \
+	if (0) ; else { \
+		Root __root__; \
+		__root__.p = (void **) &e; \
+		__root__.next = rootlist; \
+		rootlist = &__root__
+#define	RefRemove(e) \
+		assert(rootlist == &__root__); \
+		assert(rootlist->p == (void **) &e); \
+		rootlist = rootlist->next; \
 	}
 
 #define	RefEnd2(v1, v2)		RefEnd(v1); RefEnd(v2)
@@ -384,7 +400,7 @@ struct Handler {
 	jmp_buf label;
 };
 
-extern Handler childhandler, *bottomhandler;
+extern Handler childhandler, *tophandler;
 extern List *exception;
 extern List *pushhandler(Handler *handler);	/* must be a macro */
 extern void pophandler(Handler *handler);
@@ -394,8 +410,7 @@ extern void newchildcatcher(void);
 
 #define	pushhandler(hp)	( \
 		((hp)->rootlist = rootlist), \
-		((hp)->up = bottomhandler), \
-		(bottomhandler = (hp)), \
+		((hp)->up = tophandler), \
+		(tophandler = (hp)), \
 		(setjmp((hp)->label) ? exception : NULL) \
 	)
-

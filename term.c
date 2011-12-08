@@ -3,43 +3,15 @@
 #include "es.h"
 #include "gc.h"
 
-Generation generation = 1;
-Boolean rebound = FALSE;
-
-extern Generation nextgen(void) {
-	rebound = TRUE;
-	if (++generation == 0) {
-		gc();
-		generation = 1;
-	}
-	return generation;
-}
-
-static Tag TermTag;
+DefineTag(Term, static);
 
 extern Term *mkterm(char *str, Closure *closure) {
 	gcdisable(0);
 	Ref(Term *, term, gcnew(Term));
 	term->str = str;
 	term->closure = closure;
-	term->gen = 0;
 	gcenable();
 	RefReturn(term);
-}
-
-extern char *getstr(Term *term) {
-	char *s = term->str;
-	Closure *closure = term->closure;
-	assert(s != NULL || closure != NULL);
-	if (
-		s == NULL
-		|| (closure != NULL && closure->binding != NULL && term->gen != generation)
-	) {
-		assert(closure != NULL);
-		term->gen = generation;
-		return str("%C", closure);
-	}
-	return s;
 }
 
 extern Closure *getclosure(Term *term) {
@@ -58,7 +30,7 @@ extern Closure *getclosure(Term *term) {
 				return NULL;
 			}
 			tp->closure = extractbindings(np);
-			tp->gen = generation;
+			tp->str = NULL;
 			term = tp;
 			RefEnd2(np, tp);
 		}
@@ -89,12 +61,8 @@ static void *TermCopy(void *op) {
 
 static size_t TermScan(void *p) {
 	Term *term = p;
-	Closure *closure = forward(term->closure);
-	term->closure = closure;
-	term->str = (closure != NULL && closure->binding != NULL && term->gen != generation)
-			? NULL
-			: forward(term->str);
+	term->closure = forward(term->closure);
+	term->str = forward(term->str);
 	return sizeof (Term);
 }
 
-static DefineTag(Term);

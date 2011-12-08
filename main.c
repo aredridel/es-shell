@@ -2,29 +2,22 @@
 
 #include "es.h"
 
-Boolean interactive	= FALSE;	/* -i or isatty(input) */
 Boolean loginshell	= FALSE;	/* -l or $0[0] == '-' */
-Boolean noexecute	= FALSE;	/* -n */
-Boolean verbose		= FALSE;	/* -v */
-Boolean printcmds	= FALSE;	/* -x */
 Boolean exitonfalse	= FALSE;	/* -e */
 
 #if GCVERBOSE
 Boolean gcverbose	= FALSE;	/* -G */
 #endif
-#if LISPTREES
-Boolean lisptrees	= FALSE;	/* -L */
+#if GCINFO
+Boolean gcinfo		= FALSE;	/* -I */
 #endif
-
-static const char initial[] =
-#include "initial.h"
-;
 
 extern int getopt (int argc, char **argv, const char *optstring);
 extern int optind;
 extern char *optarg;
 
 extern int isatty(int fd);
+extern char **environ;
 
 
 /* checkfd -- open /dev/null on an fd if it is closed */
@@ -58,16 +51,17 @@ static noreturn usage(void) {
 }
 
 /* main -- initialize, parse command arguments, and start running */
-int main(int argc, char **argv, char **envp) {
+int main(int argc, char **argv) {
 	Handler h;
 	List *e;
 	int c;
 
-	Boolean keepclosed = FALSE;		/* -o */
-	const char *volatile cmd = NULL;	/* -c */
+	volatile int runflags = 0;		/* -[invxL] */
 	volatile Boolean protected = FALSE;	/* -p */
 	volatile Boolean allowquit = FALSE;	/* -d */
 	volatile Boolean stdin = FALSE;		/* -s */
+	Boolean keepclosed = FALSE;		/* -o */
+	const char *volatile cmd = NULL;	/* -c */
 
 	initgc();
 	initconv();
@@ -75,46 +69,51 @@ int main(int argc, char **argv, char **envp) {
 	if (*argv[0] == '-')
 		loginshell = TRUE;
 
-	while ((c = getopt(argc, argv, "eilxvnpodsc:?GL")) != EOF)
+	while ((c = getopt(argc, argv, "eilxvnpodsc:?GIL")) != EOF)
 		switch (c) {
-		case 'c':	cmd = optarg;		break;
-		case 'e':	exitonfalse = TRUE;	break;
-		case 'i':	interactive = TRUE;	break;
-		case 'l':	loginshell = TRUE;	break;
-		case 'v':	verbose = TRUE;		break;
-		case 'x':	printcmds = TRUE;	break;
-		case 'n':	noexecute = TRUE;	break;
-		case 'p':	protected = TRUE;	break;
-		case 'o':	keepclosed = TRUE;	break;
-		case 'd':	allowquit = TRUE;	break;
-#if GCVERBOSE
-		case 'G':	gcverbose = TRUE;	break;
-#endif
+		case 'c':	cmd = optarg;			break;
+		case 'i':	runflags |= run_interactive;	break;
+		case 'n':	runflags |= run_noexec;		break;
+		case 'v':	runflags |= run_echoinput;	break;
+		case 'x':	runflags |= run_printcmds;	break;
 #if LISPTREES
-		case 'L':	lisptrees = TRUE;	break;
+		case 'L':	runflags |= run_lisptrees;	break;
 #endif
-
-		case 's':
-			if (cmd != NULL) {
-				eprint("es: cannot use -s with -c\n");
-				exit(1);
-			}
-			stdin = TRUE;
-			goto getopt_done;
-
+		case 'e':	exitonfalse = TRUE;		break;
+		case 'l':	loginshell = TRUE;		break;
+		case 'p':	protected = TRUE;		break;
+		case 'o':	keepclosed = TRUE;		break;
+		case 'd':	allowquit = TRUE;		break;
+		case 's':	stdin = TRUE;			goto getopt_done;
+#if GCVERBOSE
+		case 'G':	gcverbose = TRUE;		break;
+#endif
+#if GCINFO
+		case 'I':	gcinfo = TRUE;			break;
+#endif
 		default:
 			usage();
 		}
 
 getopt_done:
+	if (stdin && cmd != NULL) {
+		eprint("es: -s and -c are incompatible\n");
+		exit(1);
+	}
+
 	if (!keepclosed) {
 		checkfd(0, oOpen);
 		checkfd(1, oCreate);
 		checkfd(2, oCreate);
 	}
 
-	if (cmd == NULL && (optind == argc || stdin) && !interactive && isatty(0))
-		interactive = TRUE;
+	if (
+		cmd == NULL
+	     && (optind == argc || stdin)
+	     && (runflags & run_interactive) == 0
+	     && isatty(0)
+	)
+		runflags |= run_interactive;
 
 	if (
 		(setjmp(childhandler.label) && (e = exception) != NULL)
@@ -129,35 +128,32 @@ getopt_done:
 
 	initinput();
 	initprims();
-	initvars(envp, initial, protected);
+	initvars(environ, protected);
 	initsignals(allowquit);
 
 	if (loginshell) {
 		char *esrc = str("%L/.esrc", varlookup("home", NULL), "\001");
 		int fd = eopen(esrc, oOpen);
-		if (fd != -1) {
-			Boolean save_interactive = interactive;
-			interactive = FALSE;
-			runfd(fd);
-			interactive = save_interactive;
-		}
+		if (fd != -1)
+			runfd(fd, esrc, 0);
 	}
 
 	if (cmd == NULL && !stdin && optind < argc) {
-		char *file = argv[optind++];
-		int fd = eopen(file, oOpen);
-		if (fd == -1) {
+		int fd;
+		Ref(char *, file, argv[optind++]);
+		if ((fd = eopen(file, oOpen)) == -1) {
 			eprint("%s: %s\n", file, strerror(errno));
 			return 1;
 		}
 		vardef("*", NULL, listify(argc - optind, argv + optind));
 		vardef("0", NULL, mklist(mkterm(file, NULL), NULL));
-		return exitstatus(runfd(fd));
+		return exitstatus(runfd(fd, file, runflags));
+		RefEnd(file);
 	}
 
 	vardef("*", NULL, listify(argc - optind, argv + optind));
 	vardef("0", NULL, mklist(mkterm(argv[0], NULL), NULL));
 	if (cmd != NULL)
-		return exitstatus(runstring(cmd));
-	return exitstatus(runfd(0));
+		return exitstatus(runstring(cmd, NULL, runflags));
+	return exitstatus(runfd(0, "stdin", runflags));
 }

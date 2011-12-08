@@ -18,16 +18,22 @@
  * protect the rest of es source from the dance of the includes
  */
 
+#if USE_UNISTD
+#include <unistd.h>
+#endif
+
 #if REQUIRE_PARAM
 #include <sys/param.h>
 #endif
 
 #include <string.h>
-#if	USE_STDDEF
-#include <stddef.h>
-#else
-#include <sys/types.h>
+
+#if ADOBE_SUNOS_HACKERY
+#define	ptrdiff_t	xxxptrdiff_t
+#define	size_t		xxxsize_t
 #endif
+
+#include <stddef.h>
 
 #if USE_STDARG
 #include <stdarg.h>
@@ -43,7 +49,7 @@
 #include <ctype.h>
 #endif
 
-#if (REQUIRE_STAT || REQUIRE_IOCTL) && USE_STDDEF
+#if REQUIRE_STAT || REQUIRE_IOCTL
 #include <sys/types.h>
 #endif
 
@@ -153,11 +159,7 @@ typedef int sigresult;
 
 #else	/* !USE_STDARG */
 
-#ifdef __STDC__
-#define	VARARGS				, ...
-#else
 #define	VARARGS
-#endif
 #define	VARARGS1(t1, v1)		(v1, va_alist) t1 v1; va_dcl
 #define	VARARGS2(t1, v1, t2, v2)	(v1, v2, va_alist) t1 v1; t2 v2; va_dcl
 #define	VA_START(ap, var)		va_start(ap)
@@ -171,11 +173,13 @@ typedef int sigresult;
 
 #if ASSERTIONS
 #define	assert(expr) \
-	if (expr) ; else { \
-		eprint("%s:%d: assertion failed (%s)\n", \
-		       __FILE__, __LINE__, STRING(expr)); \
-		ABORT(); \
-	}
+	do \
+		if (!(expr)) { \
+			eprint("%s:%d: assertion failed (%s)\n", \
+				__FILE__, __LINE__, STRING(expr)); \
+			ABORT(); \
+		} \
+	while (0)
 #else
 #define	assert(ignore) do ; while (0)
 #endif
@@ -204,6 +208,7 @@ typedef int sigresult;
  * system calls -- can we get these from some standard header uniformly?
  */
 
+#if !USE_UNISTD
 extern int chdir(const char *dirname);
 extern int close(int fd);
 extern int dup(int fd);
@@ -214,12 +219,15 @@ extern int getegid(void);
 extern int geteuid(void);
 extern int getpagesize(void);
 extern int getpid(void);
-extern int ioctl(int fd, int cmd, void *arg);
 extern int pipe(int p[2]);
 extern int read(int fd, void *buf, size_t n);
 extern int setpgrp(int pid, int pgrp);
-extern int wait(int *statusp);
+extern int umask(int mask);
 extern int write(int fd, const void *buf, size_t n);
+
+#if REQUIRE_IOCTL
+extern int ioctl(int fd, int cmd, void *arg);
+#endif
 
 #if REQUIRE_STAT
 extern int stat(const char *, struct stat *);
@@ -228,6 +236,7 @@ extern int stat(const char *, struct stat *);
 #ifdef NGROUPS
 extern int getgroups(int, int *);
 #endif
+#endif	/* !USE_UNISTD */
 
 
 /*
@@ -246,8 +255,10 @@ extern void *qsort(
 
 /* string */
 
+#if ADOBE_SUNOS_HACKERY
 extern void *memcpy(void *dst, const void *src, size_t n);
 extern void *memset(void *dst, int c, size_t n);
+#endif
 
 /* setjmp */
 

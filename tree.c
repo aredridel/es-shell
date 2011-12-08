@@ -3,7 +3,8 @@
 #include "es.h"
 #include "gc.h"
 
-static Tag Tree1Tag, Tree2Tag;
+DefineTag(Tree1, static);
+DefineTag(Tree2, static);
 
 /* mk -- make a new node; used to generate the parse tree */
 extern Tree *mk VARARGS1(NodeKind, t) {
@@ -97,6 +98,3 @@ static size_t Tree2Scan(void *p) {
 	} 
 	return offsetof(Tree, u[2]);
 }
-
-static DefineTag(Tree1);
-static DefineTag(Tree2);

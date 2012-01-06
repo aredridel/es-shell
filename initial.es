@@ -729,7 +729,7 @@ if {~ <=$&primitives restterminal} {
 
 home		= /
 ifs		= ' ' \t \n
-prompt		= '% ' ''
+prompt		= '; ' ''
 max-eval-depth	= 640
 
 #	noexport lists the variables that are not exported.  It is not

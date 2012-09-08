@@ -397,14 +397,8 @@ static int fdfill(Input *in) {
 	}
 
 	if (in->runflags & run_interactive) {
-#if READLINE
-                if (dolog) {
-                        append_history(1, history);
-                }
-#else
 		loghistory((char *) in->bufbegin, nread);
-#endif       
-        }
+    }
 
 	in->buf = in->bufbegin;
 	in->bufend = &in->buf[nread];

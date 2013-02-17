@@ -149,8 +149,7 @@ grep rlim_cur | sed -e 's/rlim_cur.*//' -e 's/^ //g' -e 's/^	//g' -e q,
 # include <sys/resource.h>
 #endif],long))
 
-AC_CACHE_CHECK(for files to extract signal information from,
-SIGFILES,
+AC_CACHE_CHECK(for files to extract signal information from, es_cv_sigfiles,
 AC_CMDSTDOUT_CPP(SIGFILES,
 [changequote(,)
 egrep '^#[ 	]+1[	 ]+' | sed 's/.*"\(.*\)".*/\1/' |sort -u |  

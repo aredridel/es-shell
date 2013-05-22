@@ -1,5 +1,6 @@
 /* signal.c -- signal handling ($Revision: 1.1.1.1 $) */
 
+#include <unistd.h>
 #include "es.h"
 #include "sigmsgs.h"
 

@@ -295,51 +295,6 @@ initgetenv(void)
 
 #endif	/* READLINE */
 
-/* fixme: delete */
-#if 0
-void readhistory(char* file) {
-#if READLINE
-        int fd;
-	char *line, buf[1024];
-	int lsz, rsz, l;
-	
-	if ((fd = eopen(file, oOpen)) < 0) {
-		return;
-	}
-	
-	line = ealloc(1024);
-	lsz = 1024;
-	
-	line[0] = '\0';
-	l = 0;
-	while ((rsz = read(fd, buf, 1024)) > 0) {
-		char *c = buf;
-		while (rsz-->0) {
-			line[l] = *(c++);
-			if (line[l] == '\n') {
-				line[l] = '\0';
-				add_history(line);
-				line[0] = '\0';
-				l = 0;
-				continue;
-			}
-			if (++l == lsz) { 
-				efree(line);
-				line = erealloc(line, lsz += 1024);
-			}
-		}
-	}
-	line[l] = '\0';
-	if (line[0] != '\0') {
-		add_history(line);
-	}
-	efree(line);
-	close(fd);
-#endif
-        return;
-}
-#endif 
-
 /* fdfill -- fill input buffer by reading from a file descriptor */
 static int fdfill(Input *in) {
 	long nread;

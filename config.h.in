@@ -92,9 +92,6 @@
 /* Define if you have the libedit library (-ledit).  */
 #undef HAVE_LIBEDIT
 
-/* Define if you have the readline library (-lreadline).  */
-#undef HAVE_LIBREADLINE
-
 /* Define if you have the sun library (-lsun).  */
 #undef HAVE_LIBSUN
 

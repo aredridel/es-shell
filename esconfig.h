@@ -189,7 +189,7 @@
 # define SYSV_SIGNALS 1
 #endif
 
-#if HAVE_LIBREADLINE || HAVE_LIBEDIT
+#if HAVE_LIBEDIT
 # define READLINE 1
 #endif
 

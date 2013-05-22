@@ -13,13 +13,10 @@ $1=`(eval "$ac_cpp conftest.$ac_ext") 2>&AC_FD_CC | $2`
 rm -f conftest*
 ])
 
-use_readline=no
 use_editline=yes
 	
-AC_ARG_WITH(readline,
---with-readline		Use GNU Readline, use_readline=no)
 AC_ARG_WITH(editline,
---without-editline		Use the Editline library, use_editline=yes)
+--without-editline		Use the Editline library, use_editline=no)
 
 AC_CANONICAL_HOST
 
@@ -58,7 +55,7 @@ dnl Checks for libraries.
 
 AC_CHECK_LIB(sun, getpwuid)
 
-if test "$use_readline" = yes || test "$use_editline" = yes
+if test "$use_editline" = yes
 then
 	AC_CHECK_LIB(ncurses, main,,
         	AC_CHECK_LIB(curses, main,,
@@ -66,14 +63,7 @@ then
  			AC_CHECK_LIB(termcap, main)
 		)
 	)
-	if test "$use_readline" = yes
-	then
-		AC_CHECK_LIB(readline, readline)
-	elif test "$use_editline" = yes
-	then
-		PKG_CHECK_MODULES(LIBEDIT, libedit)
-	fi
-
+	PKG_CHECK_MODULES(LIBEDIT, libedit)
 fi
 
 

@@ -71,7 +71,7 @@ then
 		AC_CHECK_LIB(readline, readline)
 	elif test "$use_editline" = yes
 	then
-		AC_CHECK_LIB(edit, readline)
+		PKG_CHECK_MODULES(LIBEDIT, libedit)
 	fi
 
 fi

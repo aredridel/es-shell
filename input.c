@@ -4,6 +4,10 @@
 #include "es.h"
 #include "input.h"
 
+#ifdef HAVE_LIBEDIT
+#include <histedit.h>
+#endif
+
 
 /*
  * constants
@@ -28,11 +32,14 @@ char *prompt, *prompt2;
 
 Boolean disablehistory = FALSE;
 Boolean resetterminal = FALSE;
-static char *history;
+static char *histfile;
 static int historyfd = -1; //fixme: outcomment for gnureadline
 
 #if READLINE
 int rl_meta_chars;	/* for editline; ignored for gnu readline */
+#ifdef HAVE_LIBEDIT
+static History *hist;
+#endif
 extern char *readline(char *);
 extern void add_history(char *);
 /* extern void clear_history(void); */
@@ -87,12 +94,12 @@ static void warn(char *s) {
 /* loghistory -- write the last command out to a file */
 static void loghistory(const char *cmd, size_t len) { //fixme: outcomment for gnureadline
 	const char *s, *end;
-	if (history == NULL || disablehistory)
+	if (histfile == NULL || disablehistory)
 		return;
 	if (historyfd == -1) {
-		historyfd = eopen(history, oAppend);
+		historyfd = eopen(histfile, oAppend);
 		if (historyfd == -1) {
-			eprint("history(%s): %s\n", history, esstrerror(errno));
+			eprint("history(%s): %s\n", histfile, esstrerror(errno));
 			vardef("history", NULL, NULL);
 			return;
 		}
@@ -116,14 +123,21 @@ static void loghistory(const char *cmd, size_t len) { //fixme: outcomment for gn
 
 /* sethistory -- change the file for the history log */
 extern void sethistory(char *file) {
-	history = file;
-#if HAVE_LIBREADLINE
-        read_history(file);
+#ifdef HAVE_LIBEDIT
+	HistEvent ev;
+	memzero(&ev, sizeof (HistEvent));
+	history(hist, &ev, H_LOAD, histfile);
+#endif
+	histfile = file;
+#ifndef HAVE_LIBEDIT
+#ifdef HAVE_LIBREADLINE
+	read_history(file);
 #else
 	if (historyfd != -1) {
 		close(historyfd);
 		historyfd = -1;
 	}
+#endif
 #endif
 }
 
@@ -301,6 +315,10 @@ static int fdfill(Input *in) {
 #if READLINE
 	static char *lastinbuf = NULL;
    	Boolean dolog;
+#if HAVE_LIBEDIT
+    HistEvent ev;
+	memzero(&ev, sizeof(HistEvent));
+#endif
 #endif
 	assert(in->buf == in->bufend);
 	assert(in->fd >= 0);
@@ -330,7 +348,11 @@ static int fdfill(Input *in) {
 			dolog = TRUE;
 #endif
 			if (dolog) {
+#if HAVE_LIBREADLINE
 				add_history(rlinebuf);
+#elif HAVE_LIBEDIT
+				history(hist, &ev, H_ADD, rlinebuf);
+#endif
 			}
 			lastinbuf = rlinebuf;
 		}
@@ -353,9 +375,14 @@ static int fdfill(Input *in) {
 
 	if (in->runflags & run_interactive) {
 #if READLINE
-                if (dolog) {
-                        append_history(1, history);
-                }
+		if (dolog) {
+#if HAVE_LIBREADLINE
+			append_history(1, hist);
+#endif
+#if HAVE_LIBEDIT
+			history(hist, &ev, H_SAVE, hist);
+#endif
+        }
 #else
 		loghistory((char *) in->bufbegin, nread);
 #endif       
@@ -606,7 +633,7 @@ extern void initinput(void) {
 	input = NULL;
 
 	/* declare the global roots */
-	globalroot(&history);		/* history file */
+	globalroot(&histfile);		/* history file */
 	globalroot(&error);		/* parse errors */
 	globalroot(&prompt);		/* main prompt */
 	globalroot(&prompt2);		/* secondary prompt */
@@ -622,6 +649,10 @@ extern void initinput(void) {
 	rl_readline_name = "es";
 	rl_basic_word_break_characters=" \t\n\\'`$><=;|&{()}";
         rl_completer_quote_characters="'";
+#if HAVE_LIBEDIT
+        hist = history_init();
+#elif HAVE_LIBREADLINE
         using_history();
+#endif
 #endif
 }

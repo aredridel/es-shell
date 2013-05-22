@@ -13,13 +13,13 @@ $1=`(eval "$ac_cpp conftest.$ac_ext") 2>&AC_FD_CC | $2`
 rm -f conftest*
 ])
 
-use_readline=yes
-use_editline=no
+use_readline=no
+use_editline=yes
 	
 AC_ARG_WITH(readline,
---without-readline		Use GNU Readline, use_readline=no)
+--with-readline		Use GNU Readline, use_readline=no)
 AC_ARG_WITH(editline,
---with-editline		Use the Editline library, use_editline=yes)
+--without-editline		Use the Editline library, use_editline=yes)
 
 AC_CANONICAL_HOST
 

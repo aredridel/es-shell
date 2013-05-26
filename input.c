@@ -4,8 +4,9 @@
 #include "es.h"
 #include "input.h"
 
-#ifdef HAVE_LIBEDIT
+#ifdef READLINE
 #include <histedit.h>
+#include <stdio.h>
 #endif
 
 
@@ -94,7 +95,7 @@ static void warn(char *s) {
 
 #if !READLINE
 /* loghistory -- write the last command out to a file */
-static void loghistory(const char *cmd, size_t len) { //fixme: outcomment for gnureadline
+static void loghistory(const char *cmd, size_t len) {
 	const char *s, *end;
 	if (histfile == NULL || disablehistory)
 		return;

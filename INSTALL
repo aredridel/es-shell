@@ -35,10 +35,9 @@ variables will cause those to be used in the Makefile.
 Es Options
 ----------
 
-  Es can be built to link to two command line editting libraries:
-GNU readline and editline.  For information about obtaining these, see
-the README file.  These may used by providing, respectively, the
---with-readline or --with-editline respectively.  
+  Es can be built to link to libedit, the command-line editing library
+For information about obtaining it, see the README file.  This may used by
+providing --with-editline.
 
 
 

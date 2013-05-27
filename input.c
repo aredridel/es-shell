@@ -36,20 +36,8 @@ Boolean resetterminal = FALSE;
 static char *histfile = NULL;
 
 #if READLINE
-int rl_meta_chars;	/* for editline; ignored for gnu readline */
-#ifdef HAVE_LIBEDIT
 static History *hist;
-#else
-static int historyfd = -1;
-#endif
-extern char *readline(char *);
-extern void add_history(char *);
-/* extern void clear_history(void); */
-extern char *rl_readline_name;
-extern void rl_reset_terminal(char *);
-extern char *rl_basic_word_break_characters;
-extern char *rl_completer_quote_characters;
-void readhistory(char* file);
+static EditLine *el;
 
 #if ABUSED_GETENV
 static char *stdgetenv(const char *);
@@ -127,18 +115,11 @@ static void loghistory(const char *cmd, size_t len) {
 
 /* sethistory -- change the file for the history log */
 extern void sethistory(char *file) {
-#ifdef HAVE_LIBEDIT
+#if READLINE
 	HistEvent ev;
-	memzero(&ev, sizeof (HistEvent));
-	history(hist, &ev, H_LOAD, histfile);
+	history(hist, &ev, H_SAVE, histfile);
 #endif
 	histfile = file;
-#ifndef HAVE_LIBEDIT
-	if (historyfd != -1) {
-		close(historyfd);
-		historyfd = -1;
-	}
-#endif
 }
 
 
@@ -217,18 +198,15 @@ static int eoffill(Input *in) {
 
 #if READLINE
 /* callreadline -- readline wrapper */
-static char *callreadline(char *prompt) {
-	char *r;
-	if (prompt == NULL)
-		prompt = ""; /* bug fix for readline 2.0 */
+static const char *callreadline(char *prompt, int *n) {
+	const char *r;
 	if (resetterminal) {
-		rl_reset_terminal(NULL);
 		resetterminal = FALSE;
 	}
 	interrupted = FALSE;
 	if (!setjmp(slowlabel)) {
 		slow = TRUE;
-		r = interrupted ? NULL : readline(prompt);
+		r = interrupted ? NULL : el_gets(el, n);
 	} else
 		r = NULL;
 	slow = FALSE;
@@ -236,6 +214,10 @@ static char *callreadline(char *prompt) {
 		errno = EINTR;
 	SIGCHK();
 	return r;
+}
+
+static char *getprompt (EditLine *el) {
+    return prompt;
 }
 
 /* getenv -- fake version of getenv for readline (or other libraries) */
@@ -311,27 +293,23 @@ initgetenv(void)
 
 /* fdfill -- fill input buffer by reading from a file descriptor */
 static int fdfill(Input *in) {
-	long nread;
+	int nread;
 #if READLINE
-	static char *lastinbuf = NULL;
+	static const char *lastinbuf = NULL;
    	Boolean dolog;
-#if HAVE_LIBEDIT
-    HistEvent ev;
+	HistEvent ev;
 	memzero(&ev, sizeof(HistEvent));
-#endif
 #endif
 	assert(in->buf == in->bufend);
 	assert(in->fd >= 0);
 
 #if READLINE
 	if (in->runflags & run_interactive && in->fd == 0) {
-		char *rlinebuf = callreadline(prompt);
+		const char *rlinebuf = callreadline(prompt, &nread);
 	   	dolog = FALSE;
 		if (rlinebuf == NULL)
-
 			nread = 0;
 		else {
-			nread = strlen(rlinebuf) + 1;
 			if (in->buflen < nread) {
 				while (in->buflen < nread)
 					in->buflen *= 2;
@@ -340,12 +318,7 @@ static int fdfill(Input *in) {
 			}
 			memcpy(in->bufbegin, rlinebuf, nread - 1);
 			in->bufbegin[nread - 1] = '\n';
-			dolog = *rlinebuf != '\0' && 
-                        	(lastinbuf == NULL || strcmp(rlinebuf, lastinbuf));
-			dolog = TRUE;
-			if (dolog) {
-				history(hist, &ev, H_ENTER, rlinebuf);
-			}
+			history(hist, &ev, prompt == prompt2 ? H_ADD : H_ENTER, rlinebuf);
 			lastinbuf = rlinebuf;
 		}
 	} else
@@ -367,13 +340,11 @@ static int fdfill(Input *in) {
 
 	if (in->runflags & run_interactive) {
 #if READLINE
-		if (dolog) {
-			history(hist, &ev, H_SAVE, histfile);
-        }
+		history(hist, &ev, H_SAVE, histfile);
 #else
 		loghistory((char *) in->bufbegin, nread);
 #endif
-        }
+	}
 
 	in->buf = in->bufbegin;
 	in->bufend = &in->buf[nread];
@@ -618,6 +589,10 @@ extern Boolean isinteractive(void) {
 /* initinput -- called at dawn of time from main() */
 extern void initinput(void) {
 	input = NULL;
+#if READLINE
+	HistEvent ev;
+	memzero(&ev, sizeof (HistEvent));
+#endif
 
 	/* declare the global roots */
 	globalroot(&histfile);		/* history file */
@@ -634,10 +609,10 @@ extern void initinput(void) {
 	initparse();
 
 #if READLINE
-	rl_meta_chars = 0;
-	rl_readline_name = "es";
-	rl_basic_word_break_characters=" \t\n\\'`$><=;|&{()}";
-        rl_completer_quote_characters="'";
-        hist = history_init();
+	el = el_init("es", stdin, stdout, stderr);
+	el_set(el, EL_PROMPT, getprompt);
+	hist = history_init();
+	history(hist, &ev, H_SETSIZE, 100);
+	el_set(el, EL_HIST, history, hist);
 #endif
 }

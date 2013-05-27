@@ -1,6 +1,16 @@
 CHANGES		-*- mode: indented-text -*- ($Revision: 1.4 $)
 =======
 
+0.9beta+git (May 2013)
+----------------------------------------------
+
+Stripped the distribution to its minimal core. No more binaries. Just
+compile it.
+
+Removed support for readline in favor of the much more precise libedit
+API, the non-readline-compatible version. It's got a more liberal
+license and is widely available now, ported from NetBSD.
+
 0.9beta to 0.9beta+job-control (Feb 9, 2008)
 ----------------------------------------------
 

@@ -1,4 +1,52 @@
 In no particular order:
 
-* Make job control for complex subtasks at least pauseable and resumable
+* Make job control for complex subtasks at least pauseable and 
+  resumable
 * Expose editline as primitive functions
+
+From the original paper:
+
+There are several places in es where one would expect to be able to
+redefine the built-in behavior and no such hook exists. The most
+notable of these is the wildcard expansion, which behaves identically
+to that in traditional shells. We hope to expose some of the remaining
+pieces of es in future versions.
+
+One of the least satisfying pieces of es is its parser. We have talked
+of the distinction between the core language and the full language; in
+fact, the translation of syntactic sugar (i.e., the convenient UNIX
+shell syntax presented to the user) to core language features is done
+in the same yacc-generated parser as the recognition of the core
+language. Unfortunately, this ties the full language in to the core
+very tightly, and offers little room for a user to extend the syntax
+of the shell.
+
+We can imagine a system where the parser only recognizes the core
+language, and a set of exposed transformation rules would map the
+extended syntax which makes es feel like a shell, down to the core
+language. The extend-syntax system for Scheme provides a good
+example of how to design such a mechanism, but it, like most other
+macro systems designed for Lisp-like languages, does not mesh well
+with the free-form syntax that has evolved for UNIX shells.
+
+The current implementation of es has the undesirable property that all
+function calls cause the C stack to nest. In particular, tail calls
+consume stack space, something they could be optimized not to do.
+Therefore, properly tail recursive functions, such as echo-nl above,
+which a Scheme or ML programmer would expect to be equivalent to
+looping, have hidden costs. This is an implementation deficiency which
+we hope to remedy in the near future.
+
+Es, in addition to being a good language for shell programming, is a
+good candidate for a use as an embeddable "scripting" language, along
+the lines of Tcl. Es, in fact, borrows much from Tcl -- most notably
+the idea of passing around blocks of code as unparsed strings -- and,
+since the requirements on the two languages are similar, it is not
+surprising that the syntaxes are so similar. Es has two advantages
+over most embedded languages: (1) the same code can be used by the
+shell or other programs, and many functions could be identical; and
+(2) it supports a wide variety of programming constructs, such as
+closures and exceptions. We are currently working on a "library"
+version of es which could be used stand-alone as a shell or linked in
+other programs, with or without shell features such as wildcard
+expansion or pipes.

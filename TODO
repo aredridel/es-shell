@@ -1,0 +1,4 @@
+In no particular order:
+
+* Make job control for complex subtasks at least pauseable and resumable
+* Expose editline as primitive functions

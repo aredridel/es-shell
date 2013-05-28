@@ -986,15 +986,3 @@ fn %interactive-loop {
 		}
 	}
 }
-
-# Some convenient functions for my own use -- bjs
-
-fn-l = @ { ls --color $* }
-fn-la = @ { l -a  $* }
-fn-ll = @ { l -lhr '--sort=size' $* }
-fn-llr = @ { l -lh '--sort=size' $* }
-fn-lla = @ { l -lh '--sort=size' -a $* }
-fn-lh = @ { l -lh $* }
-
-fn-cu = @ { rm -f *~ }		# cleanup - remove emacs backup files
-fn-mx = @ { chmod +x $* }	# make-executable

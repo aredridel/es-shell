@@ -296,17 +296,19 @@ static int fdfill(Input *in) {
 	int nread;
 #if READLINE
 	static const char *lastinbuf = NULL;
-   	Boolean dolog;
+	Boolean dolog;
 	HistEvent ev;
+	int editing;
 	memzero(&ev, sizeof(HistEvent));
 #endif
 	assert(in->buf == in->bufend);
 	assert(in->fd >= 0);
 
 #if READLINE
-	if (in->runflags & run_interactive && in->fd == 0) {
+	el_get(el, EL_EDITMODE, &editing);
+	if (in->runflags & run_interactive && in->fd == 0 && editing) {
 		const char *rlinebuf = callreadline(prompt, &nread);
-	   	dolog = FALSE;
+		dolog = FALSE;
 		if (rlinebuf == NULL)
 			nread = 0;
 		else {

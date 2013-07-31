@@ -282,7 +282,7 @@ PRIM(setmaxevaldepth) {
 	RefReturn(lp);
 }
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 PRIM(resetterminal) {
 	resetterminal = TRUE;
 	return true;
@@ -319,7 +319,7 @@ extern Dict *initprims_etc(Dict *primdict) {
 	X(exitonfalse);
 	X(noreturn);
 	X(setmaxevaldepth);
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	X(resetterminal);
 #endif
 	return primdict;

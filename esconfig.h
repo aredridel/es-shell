@@ -96,8 +96,8 @@
  *		that is, makes sure no characters other than c identifier
  *		characters appear in them.
  *
- *	READLINE
- *		true if es is being linked with editline or gnu readline.
+ *	HAVE_LIBEDIT
+ *		defined if es is being linked with editline
  *
  *	REF_ASSERTIONS
  *		if this is on, assertions about the use of the Ref() macro
@@ -187,10 +187,6 @@
 
 #if HAVE_SIGRELSE && HAVE_SIGHOLD
 # define SYSV_SIGNALS 1
-#endif
-
-#if HAVE_LIBEDIT
-# define READLINE 1
 #endif
 
 /* NeXT defaults */
@@ -321,10 +317,6 @@
 
 #ifndef	PROTECT_ENV
 #define	PROTECT_ENV		1
-#endif
-
-#ifndef	READLINE
-#define	READLINE		0
 #endif
 
 #ifndef	REF_ASSERTIONS

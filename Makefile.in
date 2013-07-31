@@ -41,9 +41,9 @@ INSTALL	= @INSTALL@
 ## Bison is generating incorrect parsers.  So do not use, for now
 # YACC = @YACC@
 
-CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) @CFLAGS@
+CFLAGS	= $(ADDCFLAGS) -I. -I$(srcdir) @CFLAGS@ @LIBEDIT_CFLAGS@
 LDFLAGS	= $(ADDLDFLAGS) @LDFLAGS@
-LIBS	= $(ADDLIBS) @LIBS@
+LIBS	= $(ADDLIBS) @LIBS@ @LIBEDIT_LIBS@
 
 VPATH = $(srcdir)
 

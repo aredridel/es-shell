@@ -302,7 +302,7 @@ extern List *runstring(const char *str, const char *name, int flags);
 #define	run_printcmds		32	/* -x */
 #define	run_lisptrees		64	/* -L and defined(LISPTREES) */
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 extern Boolean resetterminal;
 #endif
 

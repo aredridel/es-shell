@@ -16,7 +16,7 @@ rm -f conftest*
 use_editline=yes
 	
 AC_ARG_WITH(editline,
---without-editline		Use the Editline library, use_editline=no)
+  --without-editline		Use the Editline library, use_editline=no)
 
 AC_CANONICAL_HOST
 
@@ -63,7 +63,7 @@ then
  			AC_CHECK_LIB(termcap, main)
 		)
 	)
-	PKG_CHECK_MODULES(LIBEDIT, libedit)
+	PKG_CHECK_MODULES([LIBEDIT], [libedit], [AC_DEFINE([HAVE_LIBEDIT], [1], [Use libedit])])
 fi
 
 

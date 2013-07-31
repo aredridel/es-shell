@@ -4,7 +4,7 @@
 #include "es.h"
 #include "input.h"
 
-#ifdef READLINE
+#ifdef HAVE_LIBEDIT
 #include <histedit.h>
 #include <stdio.h>
 #endif
@@ -34,8 +34,9 @@ char *prompt, *prompt2;
 Boolean disablehistory = FALSE;
 Boolean resetterminal = FALSE;
 static char *histfile = NULL;
+int historyfd;
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 static History *hist;
 static EditLine *el;
 
@@ -81,7 +82,7 @@ static void warn(char *s) {
  * history
  */
 
-#if !READLINE
+#if !HAVE_LIBEDIT
 /* loghistory -- write the last command out to a file */
 static void loghistory(const char *cmd, size_t len) {
 	const char *s, *end;
@@ -115,7 +116,7 @@ static void loghistory(const char *cmd, size_t len) {
 
 /* sethistory -- change the file for the history log */
 extern void sethistory(char *file) {
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	HistEvent ev;
 	history(hist, &ev, H_SAVE, histfile);
 #endif
@@ -196,7 +197,7 @@ static int eoffill(Input *in) {
 	return EOF;
 }
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 /* callreadline -- readline wrapper */
 static const char *callreadline(char *prompt, int *n) {
 	const char *r;
@@ -289,12 +290,12 @@ initgetenv(void)
 
 #endif /* ABUSED_GETENV */
 
-#endif	/* READLINE */
+#endif	/* HAVE_LIBEDIT */
 
 /* fdfill -- fill input buffer by reading from a file descriptor */
 static int fdfill(Input *in) {
 	int nread;
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	static const char *lastinbuf = NULL;
 	Boolean dolog;
 	HistEvent ev;
@@ -304,7 +305,7 @@ static int fdfill(Input *in) {
 	assert(in->buf == in->bufend);
 	assert(in->fd >= 0);
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	el_get(el, EL_EDITMODE, &editing);
 	if (in->runflags & run_interactive && in->fd == 0 && editing) {
 		const char *rlinebuf = callreadline(prompt, &nread);
@@ -341,7 +342,7 @@ static int fdfill(Input *in) {
 	}
 
 	if (in->runflags & run_interactive) {
-#if READLINE
+#ifdef HAVE_LIBEDIT
 		history(hist, &ev, H_SAVE, histfile);
 #else
 		loghistory((char *) in->bufbegin, nread);
@@ -369,7 +370,7 @@ extern Tree *parse(char *pr1, char *pr2) {
 	if (ISEOF(input))
 		throw(mklist(mkstr("eof"), NULL));
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	prompt = (pr1 == NULL) ? "" : pr1;
 #else
 	if (pr1 != NULL)
@@ -591,7 +592,7 @@ extern Boolean isinteractive(void) {
 /* initinput -- called at dawn of time from main() */
 extern void initinput(void) {
 	input = NULL;
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	HistEvent ev;
 	memzero(&ev, sizeof (HistEvent));
 #endif
@@ -602,7 +603,7 @@ extern void initinput(void) {
 	globalroot(&prompt);		/* main prompt */
 	globalroot(&prompt2);		/* secondary prompt */
 
-#if !READLINE
+#if !HAVE_LIBEDIT
 	/* mark the historyfd as a file descriptor to hold back from forked children */
 	registerfd(&historyfd, TRUE);
 #endif
@@ -610,7 +611,7 @@ extern void initinput(void) {
 	/* call the parser's initialization */
 	initparse();
 
-#if READLINE
+#ifdef HAVE_LIBEDIT
 	el = el_init("es", stdin, stdout, stderr);
 	el_set(el, EL_PROMPT, getprompt);
 	hist = history_init();

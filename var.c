@@ -349,7 +349,7 @@ extern void initvars(void) {
 	noexport = NULL;
 	env = mkvector(10);
 #if ABUSED_GETENV
-# if READLINE
+# ifdef HAVE_LIBEDIT
 	initgetenv();
 # endif
 #endif
